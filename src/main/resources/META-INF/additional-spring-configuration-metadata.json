@@ -1,0 +1,97 @@
+{"properties": [
+  {
+    "name": "app.jwt.secret",
+    "type": "java.lang.String",
+    "description": "Llave para la generación de JWT"
+  },
+  {
+    "name": "usuario1.correo",
+    "type": "java.lang.String",
+    "description": "Correo para el usuario1, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "usuario2.correo",
+    "type": "java.lang.String",
+    "description": "Correo para el usuario2, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "usuario1.contrasena",
+    "type": "java.lang.String",
+    "description": "Contrasena para el usuario1, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "usuario2.contrasena",
+    "type": "java.lang.String",
+    "description": "Contrasena para el usuario2, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "usuario1.nombre",
+    "type": "java.lang.String",
+    "description": "Nombre para el usuario1, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "usuario2.nombre",
+    "type": "java.lang.String",
+    "description": "Nombre para el usuario2, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "estadotarea1.nombre",
+    "type": "java.lang.String",
+    "description": "Nombre para el EstadoTarea 1, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "estadotarea2.nombre",
+    "type": "java.lang.String",
+    "description": "Nombre para el EstadoTarea 1, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "estadotarea3.nombre",
+    "type": "java.lang.String",
+    "description": "Nombre para el EstadoTarea 1, que se genera para poblar inicialmente la DB"
+  },
+  {
+    "name": "estadotarea1.id",
+    "type": "java.lang.String",
+    "description": "Id para el estado de tarea 1"
+  },
+  {
+    "name": "tarea1.id",
+    "type": "java.lang.String",
+    "description": "Id para la tarea 1, se genera para datos de prueba"
+  },
+  {
+    "name": "tarea1.nombre",
+    "type": "java.lang.String",
+    "description": "Nombre para la tarea 1, se genera para datos de prueba"
+  },
+  {
+    "name": "tarea1.descripcion",
+    "type": "java.lang.String",
+    "description": "Descripcion para la tarea 1, se genera para datos de prueba"
+  },
+  {
+    "name": "tarea1.nombremodificado",
+    "type": "java.lang.String",
+    "description": "Nombre modificado para la tarea 1, se genera para datos de prueba"
+  },
+  {
+    "name": "tarea2.id",
+    "type": "java.lang.String",
+    "description": "Id para la tarea 2, se genera para datos de prueba"
+  },
+  {
+    "name": "tarea2.nombre",
+    "type": "java.lang.String",
+    "description": "Nombre para la tarea 2, se genera para datos de prueba"
+  },
+  {
+    "name": "tarea2.descripcion",
+    "type": "java.lang.String",
+    "description": "Descripcion para la tarea 2, se genera para datos de prueba"
+  },
+  {
+    "name": "tarea2.nombremodificado",
+    "type": "java.lang.String",
+    "description": "Nombre modificado para la tarea 2, se genera para datos de prueba"
+  }
+]}

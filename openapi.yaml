@@ -1,0 +1,311 @@
+---
+openapi: 3.0.0
+info:
+  title: Ejemplo de API para gestionar Tareas
+  description: Desafío Técnico - Gestión de Tareas con Spring Boot y Java
+  contact:
+    email: rhoffmann.let@gmail.com
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/RHOFFMANNLET/PREVIRED/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: Tareas
+  description: Acciones sobre Tareas
+- name: Autenticación
+  description: Acciones de autenticación
+paths:
+  /api/tareas:
+    get:
+      tags:
+      - Tareas
+      summary: Obtención de tareas
+      description: "Obtiene las tareas asociadas al usuario que realiza la consulta, permitiendo paginación"
+      operationId: obtenerTareas
+      parameters:
+      - name: page
+        in: query
+        description: Número de página que se quiere recuperar (comienza en 0).
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: Número de registros por página.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Criterio de ordenación en el formato: propiedad[,asc|desc]. La dirección de ordenación por defecto es ascendente."
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: "nombre,asc"
+      responses:
+        "200":
+          description: Listado de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TareaDTO'
+        "400":
+          description: bad input parameter
+        "401":
+          description: No autorizado - Falta de credenciales de autenticación o son inválidas.
+      security:
+      - BearerAuth: []
+    post:
+      tags:
+      - Tareas
+      summary: Creación de tareas
+      description: "Crea una nueva tarea, asociandola al usuario que realiza la petición y dejandola en el estado inicial"
+      operationId: crearTarea
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaPostDTO'
+        required: true
+      responses:
+        "201":
+          description: Tarea creada
+        "400":
+          description: Error en los datos de entrada
+        "401":
+          description: No autorizado - Falta de credenciales de autenticación o son inválidas.
+      security:
+      - BearerAuth: []
+  /api/tareas/{id}:
+    get:
+      tags:
+      - Tareas
+      summary: Obtención de tarea por ID
+      description: "Obtiene una tarea segun su ID, se restringe para que el usuario que realiza la petición solo pueda obtener tareas que él haya creado/que estén asociadas a él"
+      operationId: obtenerTareaPorId
+      parameters:
+      - name: id
+        in: path
+        description: ID de la tarea buscada
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Detalles de la tarea
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaDTO'
+        "404":
+          description: Tarea no encontrada o no asociada al usuario
+        "401":
+          description: No autorizado - Falta de credenciales de autenticación o son inválidas.
+      security:
+      - BearerAuth: []
+    put:
+      tags:
+      - Tareas
+      summary: Actualización de tarea por ID
+      description: "Actualizar una tarea existente, se restringe para que el usuario que realiza la petición solo pueda modificar sus tareas y no se permite tampoco la modificación del usuario asignado"
+      operationId: actualizarTarea
+      parameters:
+      - name: id
+        in: path
+        description: ID de la tarea a modificar
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaPutDTO'
+        required: true
+      responses:
+        "200":
+          description: Tarea actualizada
+        "400":
+          description: Error en los datos de entrada
+        "404":
+          description: Tarea no encontrada o no asociada al usuario
+        "401":
+          description: No autorizado - Falta de credenciales de autenticación o son inválidas.
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - Tareas
+      summary: Eliminación de tarea por ID
+      description: "Eliminar una tarea, se restringe para que el usuario que realiza la petición solo pueda eliminar sus tareas"
+      operationId: eliminarTarea
+      parameters:
+      - name: id
+        in: path
+        description: ID de la tarea a eliminar
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Tarea eliminada
+        "404":
+          description: Tarea no encontrada o no asociada al usuario
+        "401":
+          description: No autorizado - Falta de credenciales de autenticación o son inválidas.
+      security:
+      - BearerAuth: []
+  /auth/login:
+    post:
+      tags:
+      - Autenticación
+      summary: Autenticación de usuario
+      description: Permite a un usuario autenticarse proporcionando su correo y contraseña. Devuelve un token JWT si la autenticación es exitosa.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PeticionAutenticacionDTO'
+        required: true
+      responses:
+        "200":
+          description: Autenticación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespuestaAutenticacionDTO'
+        "401":
+          description: Autenticación fallida
+components:
+  schemas:
+    TareaDTO:
+      required:
+      - estadoTarea
+      - id
+      - nombre
+      - usuario
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 123456789
+        nombre:
+          type: string
+          example: Tarea de ejemplo
+        descripcion:
+          type: string
+          example: Esto es solo un ejemplo de descripción de la tarea para mostrar un ejemplo del contenido.
+        estadoTarea:
+          $ref: '#/components/schemas/EstadoTareaDTO'
+        usuario:
+          $ref: '#/components/schemas/UsuarioDTO'
+    TareaPutDTO:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: Tarea de ejemplo
+        descripcion:
+          type: string
+          example: Esto es solo un ejemplo de descripción de la tarea para mostrar un ejemplo del contenido.
+        estadoTarea:
+          $ref: '#/components/schemas/EstadoTareaRefDTO'
+    TareaPostDTO:
+      required:
+      - nombre
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: Tarea de ejemplo
+        descripcion:
+          type: string
+          example: Esto es solo un ejemplo de descripción de la tarea para mostrar un ejemplo del contenido.
+    EstadoTareaDTO:
+      required:
+      - id
+      - nombre
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 123456789
+        nombre:
+          type: string
+          example: EN_PROCESO
+    EstadoTareaRefDTO:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 123456789
+    UsuarioDTO:
+      required:
+      - correo
+      - id
+      - nombre
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 123456789
+        nombre:
+          type: string
+          example: Malto Anselmo
+        correo:
+          type: string
+          format: email
+          example: admin@admin.com
+    PeticionAutenticacionDTO:
+      required:
+      - contrasena
+      - correo
+      properties:
+        correo:
+          type: string
+          format: email
+          example: admin@admin.com
+        contrasena:
+          type: string
+          example: UnaContrasena123
+    RespuestaAutenticacionDTO:
+      required:
+      - correo
+      - tokenAcceso
+      properties:
+        correo:
+          type: string
+          format: email
+          example: admin@admin.com
+        tokenAcceso:
+          type: string
+          example: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLGFkbWluIiwiaXNzIjoiUHJldmlyZWQiLCJpYXQiOjE3MTE1NTAxMjksImV4cCI6MTcxMTYzNjUyOX0.cvx5od9y1xzc5FYEgk4Y4t-T85U9QXbYhuGGpvYUlL8EZtcltY9JjyEl6N6CIIT-UC0VpUebVhi12NaQ2Ub0GQ
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

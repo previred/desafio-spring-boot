@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "e8759217-f7c1-42e2-853e-002886d8e95c",
+		"name": "PREVIRED",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4471831"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contrasena\": \"u1contrasena\",\r\n    \"correo\":\"u1@mail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLHUxQG1haWwuY29tIiwiaXNzIjoiUHJldmlyZWQiLCJpYXQiOjE3MTE2NDEzMzMsImV4cCI6MTcxMTcyNzczM30.EJJiZIt-L5boWSXi6bnPlej5yjLZeFnLPsjI9jmoG2wj9Pm8HZLqNUCE9Y4FxC5zZ42hXGsk4YXq8VX81FGNdg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Una tarea de prueba\",\r\n  \"descripcion\": \"Esto solo es una descripcion para la tarea de prueba\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tareas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tareas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLHUxQG1haWwuY29tIiwiaXNzIjoiUHJldmlyZWQiLCJpYXQiOjE3MTE2NDEzMzMsImV4cCI6MTcxMTcyNzczM30.EJJiZIt-L5boWSXi6bnPlej5yjLZeFnLPsjI9jmoG2wj9Pm8HZLqNUCE9Y4FxC5zZ42hXGsk4YXq8VX81FGNdg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tareas?page=0&size=5&sort=nombre,asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tareas"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						},
+						{
+							"key": "sort",
+							"value": "nombre,asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLHUxQG1haWwuY29tIiwiaXNzIjoiUHJldmlyZWQiLCJpYXQiOjE3MTE2NDEzMzMsImV4cCI6MTcxMTcyNzczM30.EJJiZIt-L5boWSXi6bnPlej5yjLZeFnLPsjI9jmoG2wj9Pm8HZLqNUCE9Y4FxC5zZ42hXGsk4YXq8VX81FGNdg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Cambiamos el nombre de la tarea\",\r\n    \"descripcion\":\"Y la descripcion, tambien cambiaremos el estado\", \r\n    \"estadoTarea\": {\r\n        \"id\":2\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/tareas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tareas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxLHUxQG1haWwuY29tIiwiaXNzIjoiUHJldmlyZWQiLCJpYXQiOjE3MTE2NDEzMzMsImV4cCI6MTcxMTcyNzczM30.EJJiZIt-L5boWSXi6bnPlej5yjLZeFnLPsjI9jmoG2wj9Pm8HZLqNUCE9Y4FxC5zZ42hXGsk4YXq8VX81FGNdg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tareas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tareas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
