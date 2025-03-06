@@ -1,72 +1,181 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# 🛠️ Gestión de Tareas con Spring Boot
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI y Swagger.
+Este proyecto es una API REST que permite gestionar tareas. Implementa autenticación con JWT, documentación con OpenAPI y Swagger, y sigue principios SOLID y mejores prácticas de desarrollo.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+---
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 17 para la implementación.
-- Utiliza las características de Java 17, como lambdas y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias
+## 📄 Tecnologías Utilizadas
 
-### Spring Boot 3.4.x:
-- Construye la aplicación utilizando Spring Boot 3.4.x (última versión disponible).
+- **Java 17**
+- **Spring Boot 3.4.0**
+- **Spring Security (JWT)**
+- **Spring Data JPA (Hibernate)**
+- **H2 Database (Base de datos en memoria)**
+- **Lombok**
+- **Swagger con OpenAPI 3**
+- **Maven como gestor de dependencias**
+- **API First (OpenAPI Generator)**
 
-### Base de Datos:
+---
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+## 🛠️ Instalación y Configuración
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+### 🔹 1. Clonar el repositorio
 
-### JWT (JSON Web Token):
+```bash
+git clone https://github.com/previred/desafio-spring-boot.git
+cd gestion-tareas
+```
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+### 🔹 2. Configurar las variables de entorno
 
-### OpenAPI y Swagger:
+Crea un archivo `` en `src/main/resources/` con la siguiente configuración:
 
-- Documenta la API utilizando OpenAPI y Swagger.
+```properties
+# Configuración 
+spring.application.name=desafio-spring-boot
+spring.jackson.deserialization.fail-on-unknown-properties=true
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+# Configuración de la base de datos H2
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.datasource.url=jdbc:h2:mem:desafio
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+# Clave secreta para JWT
+jwt.secret=eXNyYTI1NlNlY3JldFNlY3JldEhhc2g2NDMySW5QbGFjZQ==
+```
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+### 🔹 3. Construir el proyecto
 
-### Documentación:
-- Utiliza OpenAPI y Swagger para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+```bash
+mvn clean install
+```
 
-### Código Limpio:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
+### 🔹 4. Ejecutar la aplicación
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+```bash
+mvn spring-boot:run
+```
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
+La API estará disponible en:📍 [**http://localhost:8080**](http://localhost:8080)
 
-### Documentación:
-- Incluye instrucciones claras sobre cómo ejecutar y probar la aplicación.
-- **Incluir Json de prueba en un archivo texto o mediante un proyecto postman** Nota: Si no va se restaran puntos de la evaluación
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+---
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 17, Spring Boot 3.4.x, H2, JWT, OpenAPI y Swagger.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+## 🔐 Autenticación con JWT
+
+El sistema usa JWT para proteger los endpoints. Para obtener un token, inicia sesión con:
+
+### 👉 **Login**
+
+**Endpoint:** `POST /api/auth/login`**Ejemplo de solicitud:**
+
+```json
+{
+  "username": "Ronny",
+  "password": "Password123!"
+}
+```
+
+**Ejemplo de respuesta:**
+
+```json
+{
+  "message": "Inicio de sesión exitoso",
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSb25ueSIsImlhdCI6MTc0MTIzMjE0NCwiZXhwIjoxNzQxMjY4MTQ0fQ.-FB4qhVJ1Cr-scOVSU3ncafJ04gNiuQHlIGyj5p5yQU"
+}
+```
+
+**🔗 Importante:** En cada petición autenticada, agregar el token en el **Header**:
+
+```
+Authorization: Bearer {token}
+```
+
+---
+
+## 📈 Documentación de la API
+
+Swagger está disponible en:📍 [**http://localhost:8080/swagger-ui/index.html#/**](http://localhost:8080/swagger-ui/index.html#/)
+
+La Documenatcion en Postman en:📍 [**https://documenter.getpostman.com/view/18224934/2sAYdmk7mr**](https://documenter.getpostman.com/view/18224934/2sAYdmk7mr)
+---
+
+## 🔍 Endpoints Disponibles
+
+### 🔒 **Autenticación**
+
+| Método | Endpoint          | Descripción                  | Protegido |
+| ------ | ----------------- | ---------------------------- | --------- |
+| `POST` | `/api/auth/login` | Iniciar sesión y obtener JWT | ❌ No      |
+
+---
+
+### 👤 **Usuarios**
+
+| Método   | Endpoint             | Descripción            | Protegido |
+| -------- | -------------------- | ---------------------- | --------- |
+| `GET`    | `/api/v1/users`      | Listar usuarios        | ✅ Sí      |
+| `GET`    | `/api/v1/users/{id}` | Obtener usuario por ID | ✅ Sí      |
+| `POST`   | `/api/v1/users`      | Crear nuevo usuario    | ✅ Sí      |
+| `PUT`    | `/api/v1/users/{id}` | Actualizar usuario     | ✅ Sí      |
+| `DELETE` | `/api/v1/users/{id}` | Eliminar usuario       | ✅ Sí      |
+
+---
+
+### ✅ **Tareas**
+
+| Método   | Endpoint                                 | Descripción               | Protegido |
+| -------- | ---------------------------------------- | ------------------------- | --------- |
+| `GET`    | `/api/v1/tasks`                          | Listar todas las tareas   | ✅ Sí      |
+| `GET`    | `/api/v1/tasks/{id}`                     | Obtener tarea por ID      | ✅ Sí      |
+| `GET`    | `/api/v1/tasks/search?keyword={palabra}` | Buscar por palabra clave  | ✅ Sí      |
+| `GET`    | `/api/v1/tasks/grouped-status`           | Agrupar tareas por estado | ✅ Sí      |
+| `POST`   | `/api/v1/tasks`                          | Crear nueva tarea         | ✅ Sí      |
+| `PUT`    | `/api/v1/tasks/{id}`                     | Actualizar tarea          | ✅ Sí      |
+| `DELETE` | `/api/v1/tasks/{id}`                     | Eliminar tarea            | ✅ Sí      |
+
+---
+
+### 📊 **Estados de Tareas**
+
+| Método   | Endpoint                    | Descripción              | Protegido |
+| -------- |-----------------------------|--------------------------| --------- |
+| `GET`    | `/api/v1/task-status`       | Listar todas las estados | ✅ Sí      |
+| `GET`    | `/api/v1/task-status/{id}`  | Obtener estado por ID    | ✅ Sí      |
+| `POST`   | `/api/v1/task-status`       | Crear nuevo estado       | ✅ Sí      |
+| `PUT`    | `/api/v1/tasks-status/{id}` | Actualizar tarea         | ✅ Sí      |
+| `DELETE` | `/api/v1/tasks-status/{id}` | Eliminar tarea           | ✅ Sí      |
+
+---
+
+
+## 🎡 Datos del Proyecto
+
+### 💪 **Buenas Prácticas Implementadas**
+
+- ✅ Principios **SOLID**
+- ✅ Uso de **Streams y Lambdas**
+- ✅ Seguridad con **JWT y Spring Security**
+- ✅ Documentación con **Swagger**
+- ✅ Arquitectura con **DTOs y Repositories**
+- ✅ Implementación de **API First con OpenAPI**
+
+### ✨ **Puntos Extras**
+
+- ✅ **API First** usando `openapi-generator-maven-plugin`
+- ✅ **Errores manejados globalmente** (`GlobalExceptionHandler`)
+- ✅ **Código modular y reutilizable**
+- ✅ **Documentación clara y concisa**
+
+
+### 👨‍💻 **Autor**
+
+- 📌 **Nombre:** `Ronny Joel Chupillon Silva`
+- 📌 **Correo:** (`cronnyjoel2@gmail.com`)
+- 📌 **Cargo:** `Desarrollador Full Stack Backend`
+- 📌 **LinkedIn:** [Ronny Joel Chupillon Silva](https://www.linkedin.com/in/ronny-joel-chupillon-silva-874a1b226/)
+

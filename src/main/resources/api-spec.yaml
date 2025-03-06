@@ -1,0 +1,577 @@
+openapi: 3.0.1
+info:
+  title: Task Management API
+  version: "1.0.0"
+  description: >
+    API para la gestión de tareas con autenticación JWT. 
+    Permite gestionar usuarios, tareas y estados de tarea.
+servers:
+  - url: http://localhost:8080
+security:
+  - jwt: []
+paths:
+  /api/auth/login:
+    post:
+      summary: "Inicio de sesión"
+      description: "Autentica al usuario y devuelve un token JWT."
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: "Inicio de sesión exitoso"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/v1/users:
+    get:
+      summary: "Obtener usuarios"
+      description: "Devuelve la lista de usuarios."
+      responses:
+        '200':
+          description: "Usuarios obtenidos correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Usuarios obtenidos correctamente"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+    post:
+      summary: "Registrar usuario"
+      description: "Registra un nuevo usuario en el sistema."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: "Usuario registrado correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Usuario registrado correctamente"
+                  data:
+                    $ref: '#/components/schemas/User'
+  /api/v1/users/{id}:
+    get:
+      summary: "Obtener usuario por ID"
+      description: "Devuelve un usuario específico dado su ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Usuario obtenido correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Usuario obtenido correctamente"
+                  data:
+                    $ref: '#/components/schemas/User'
+    put:
+      summary: "Actualizar usuario"
+      description: "Actualiza la información de un usuario existente."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: "Usuario actualizado correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Usuario actualizado correctamente"
+                  data:
+                    $ref: '#/components/schemas/User'
+    delete:
+      summary: "Eliminar usuario"
+      description: "Elimina un usuario dado su ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Usuario eliminado correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Usuario eliminado correctamente"
+                  data:
+                    type: string
+  /api/v1/tasks:
+    get:
+      summary: "Obtener tareas"
+      description: "Devuelve la lista de todas las tareas."
+      responses:
+        '200':
+          description: "Lista de tareas obtenida correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Lista de tareas obtenida correctamente"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+    post:
+      summary: "Crear tarea"
+      description: "Crea una nueva tarea en la base de datos."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          description: "Tarea creada correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tarea creada correctamente"
+                  data:
+                    $ref: '#/components/schemas/Task'
+  /api/v1/tasks/{id}:
+    get:
+      summary: "Obtener tarea por ID"
+      description: "Devuelve una tarea específica dado su ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Tarea obtenida correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tarea obtenida correctamente"
+                  data:
+                    $ref: '#/components/schemas/Task'
+    put:
+      summary: "Actualizar tarea"
+      description: "Actualiza la información de una tarea existente."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          description: "Tarea actualizada correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tarea actualizada correctamente"
+                  data:
+                    $ref: '#/components/schemas/Task'
+    delete:
+      summary: "Eliminar tarea"
+      description: "Elimina una tarea dado su ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Tarea eliminada correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tarea eliminada correctamente"
+                  data:
+                    type: string
+  /api/v1/tasks/search:
+    get:
+      summary: "Buscar tareas por palabra clave"
+      description: "Devuelve las tareas que coinciden con la palabra clave en la descripción."
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Tareas encontradas correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tareas encontradas correctamente"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+  /api/v1/tasks/grouped-status:
+    get:
+      summary: "Agrupar tareas por estado"
+      description: "Devuelve las tareas agrupadas según su estado."
+      responses:
+        '200':
+          description: "Tareas agrupadas correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Tareas agrupadas correctamente"
+                  data:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Task'
+  /api/v1/task-status:
+    get:
+      summary: "Obtener estados de tarea"
+      description: "Devuelve la lista de todos los estados de tarea."
+      responses:
+        '200':
+          description: "Estados obtenidos correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Estados obtenidos correctamente"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskStatus'
+    post:
+      summary: "Crear estado de tarea"
+      description: "Crea un nuevo estado de tarea."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskStatus'
+      responses:
+        '201':
+          description: "Estado de tarea creado correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Estado de tarea creado correctamente"
+                  data:
+                    $ref: '#/components/schemas/TaskStatus'
+  /api/v1/task-status/{id}:
+    get:
+      summary: "Obtener estado de tarea por ID"
+      description: "Devuelve un estado de tarea específico dado su ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Estado de tarea obtenido correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Estado de tarea obtenido correctamente"
+                  data:
+                    $ref: '#/components/schemas/TaskStatus'
+    put:
+      summary: "Actualizar estado de tarea"
+      description: "Actualiza la información de un estado de tarea existente."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskStatus'
+      responses:
+        '200':
+          description: "Estado de tarea actualizado correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Estado de tarea actualizado correctamente"
+                  data:
+                    $ref: '#/components/schemas/TaskStatus'
+    delete:
+      summary: "Eliminar estado de tarea"
+      description: "Elimina un estado de tarea dado su ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Estado de tarea eliminado correctamente."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Estado de tarea eliminado correctamente"
+                  data:
+                    type: string
+components:
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AuthRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "Ronny"
+          description: "Nombre de usuario"
+        password:
+          type: string
+          example: "Password123!"
+          description: "Contraseña del usuario"
+      required:
+        - username
+        - password
+    AuthResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Inicio de sesión exitoso"
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      required:
+        - message
+        - token
+    User:
+      type: object
+      properties:
+        id_user:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: "Ronny"
+      required:
+        - username
+    UserRegistration:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "Ronny"
+          description: "Nombre de usuario para el registro"
+        password:
+          type: string
+          example: "StrongPassword123!"
+          description: "Contraseña para el registro"
+      required:
+        - username
+        - password
+    Task:
+      type: object
+      properties:
+        id_task:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date
+          example: "2025-03-01"
+        description:
+          type: string
+          example: "Revisar el informe de ventas"
+        user_id:
+          type: integer
+          example: 1
+        status_id:
+          type: integer
+          example: 1
+      required:
+        - created_at
+        - description
+        - user_id
+        - status_id
+    TaskStatus:
+      type: object
+      properties:
+        id_status:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Pendiente"
+      required:
+        - name
+    ResponseWrapper:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Operación exitosa"
+        data:
+          type: object
+      required:
+        - success
+        - message
+        - data
