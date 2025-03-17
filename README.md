@@ -1,72 +1,154 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# API de Gestión de Tareas
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI y Swagger.
+API REST desarrollada con Spring Boot para la gestión de tareas personales, incluyendo autenticación con JWT, historial de cambios de estado y documentación completa mediante Swagger/OpenAPI.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+---
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 17 para la implementación.
-- Utiliza las características de Java 17, como lambdas y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias
+## 🚀 Tecnologías utilizadas
+- Java 17
+- Spring Boot 3.x
+- Spring Security + JWT
+- Spring Data JPA
+- H2 Database (en memoria)
+- Swagger UI (springdoc-openapi)
+- Bruno (colección de pruebas)
+- OpenAPI 3.0 (documentación YAML)
 
-### Spring Boot 3.4.x:
-- Construye la aplicación utilizando Spring Boot 3.4.x (última versión disponible).
+---
 
-### Base de Datos:
+## ⚙️ Requisitos
+- JDK 17+
+- Maven 3.8+
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+---
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+## ▶️ Cómo ejecutar el proyecto
 
-### JWT (JSON Web Token):
+1. Clonar o descomprimir el proyecto.
+2. Desde terminal:
+   
+   mvn clean install
+   mvn spring-boot:run
+   
+3. Acceder a Swagger UI:
+   
+   http://localhost:8080/swagger-ui.html
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+---
 
-### OpenAPI y Swagger:
+## 🔐 Autenticación (JWT)
 
-- Documenta la API utilizando OpenAPI y Swagger.
+Para acceder a los endpoints protegidos, primero debes loguearte y obtener un token JWT.
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+### Endpoint:
+POST /auth/login
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+### Ejemplo de solicitud:
+```json
+{
+  "email": "admin@tareas.com",
+  "password": "admin123"
+}
+```
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+### Respuesta:
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
 
-### Documentación:
-- Utiliza OpenAPI y Swagger para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+### Uso del token:
+Agregar el token JWT en cada petición protegida:
+```
+Authorization: Bearer TU_TOKEN_AQUI
+```
 
-### Código Limpio:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
+---
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+## 👥 Usuarios de prueba precargados
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
+| Nombre          | Email               | Contraseña |
+|-----------------|---------------------|------------|
+| Administrador   | admin@tareas.com    | admin123   |
+| Maria Lopez     | maria@tareas.com    | maria123   |
+| Juan Perez      | juan@tareas.com     | juan123    |
 
-### Documentación:
-- Incluye instrucciones claras sobre cómo ejecutar y probar la aplicación.
-- **Incluir Json de prueba en un archivo texto o mediante un proyecto postman** Nota: Si no va se restaran puntos de la evaluación
+---
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+## 📂 Documentación de la API
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 17, Spring Boot 3.4.x, H2, JWT, OpenAPI y Swagger.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+- **Swagger UI**  
+  Visualiza y prueba todos los endpoints:  
+  [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+- **OpenAPI YAML**  
+  Documentación formal de la API:  
+  Archivo: `docs/openapi.yaml`  
+  Puedes visualizarlo en: [https://editor.swagger.io](https://editor.swagger.io)
+
+---
+
+## 🧪 Colección de pruebas (Bruno)
+
+La API ha sido **testeada completamente con la herramienta Bruno**, que permite gestionar peticiones HTTP de forma similar a Postman. Se incluye la colección exportada tanto en formato Bruno como Postman (generado desde Bruno, no testeado en Postman).
+
+### ✔️ Operaciones incluidas:
+1. **Solicitar token JWT**  
+   - Endpoint: `POST /auth/login`  
+   - Usuario: `maria@tareas.com / maria123`  
+   - El token se guarda como variable `{{token}}` automáticamente con:
+     ```javascript
+     bru.setVar("token", res.body.token);
+     ```
+
+2. **Crear tarea** – `POST /api/tasks`  
+3. **Listar tareas** – `GET /api/tasks`  
+4. **Obtener tarea por ID** – `GET /api/tasks/{id}`  
+5. **Actualizar tarea** – `PUT /api/tasks/{id}`  
+6. **Cambiar estado** – `PATCH /api/tasks/{id}/status`  
+7. **Eliminar tarea** – `DELETE /api/tasks/{id}` 
+
+### 📂 Archivos incluidos:
+- `docs/gestion-tareas-bruno-collection.json`  
+- `docs/gestion-tareas-postman-collection.json` *(generado, no testeado)*
+
+---
+
+## 📦 Funcionalidades implementadas
+- Registro y gestión de tareas personales.
+- Seguridad JWT con usuarios precargados.
+- Fechas de creación y actualización.
+- Eliminación lógica 
+- Filtros para ocultar tareas eliminadas.
+- Documentación Swagger UI y OpenAPI.
+
+---
+
+## 🌟 Valor agregado implementado
+Se implementó como **funcionalidad destacada adicional** un **historial de cambios de estado por tarea**, que permite:
+- Registrar la evolución del estado de cada tarea (por ejemplo: de `PENDING` a `IN_PROGRESS` a `COMPLETED`).
+- Consultar el historial directamente en cada respuesta de tarea.
+- Persistir cambios con fecha y hora de cada transición de estado.
+
+Este historial no era requerido por el desafío, y fue incluido como **mejora** para trazabilidad y auditoría.
+
+---
+
+## 🗂️ Base de datos
+- Motor: H2 (en memoria, sin configuración adicional).
+- Estados predefinidos: `PENDING`, `IN_PROGRESS`, `COMPLETED`.
+- Tabla adicional: historial de cambios de estado por tarea (valor agregado).
+
+---
+
+## ❓ Notas adicionales
+- El token JWT se gestiona automáticamente en Bruno mediante variable.
+- Swagger UI permite probar todo sin Postman.
+- El proyecto está completamente funcional y probado.
+- Compatible con Spring Boot 3.x (Jakarta).
+
+---
+
+## 📬 Autor
+Desarrollado por: Cristóbal Cifuentes

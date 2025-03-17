@@ -1,0 +1,239 @@
+{
+  "name": "coleccion desafio tecnico",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "Crear tarea",
+      "seq": 1,
+      "request": {
+        "url": "http://localhost:8080/api/tasks",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"Probar API\",\n  \"description\": \"Probar endpoints\",\n  \"status\": \"PENDING\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "bearer",
+          "bearer": {
+            "token": "{{token}}"
+          }
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Listar tareas",
+      "seq": 3,
+      "request": {
+        "url": "http://localhost:8080/api/tasks",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "bearer",
+          "bearer": {
+            "token": "{{token}}"
+          }
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Solicitar token JWT",
+      "seq": 6,
+      "request": {
+        "url": "http://localhost:8080/auth/login",
+        "method": "POST",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"email\": \"maria@tareas.com\",\n  \"password\": \"maria123\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "bru.setVar(\"token\", res.body.token);",
+        "docs": "",
+        "auth": {
+          "mode": "none"
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "cambiar estado",
+      "seq": 4,
+      "request": {
+        "url": "http://localhost:8080/api/tasks/1/status",
+        "method": "PATCH",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\"statusName\":\"IN_PROGRESS\"}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "bearer",
+          "bearer": {
+            "token": "{{token}}"
+          }
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "actualizar tarea",
+      "seq": 5,
+      "request": {
+        "url": "http://localhost:8080/api/tasks/2",
+        "method": "PUT",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json",
+            "enabled": true
+          }
+        ],
+        "params": [],
+        "body": {
+          "mode": "json",
+          "json": "{\n  \"title\": \"Informe actualizado\",\n  \"description\": \"Actualicé el resumen financiero con nuevos datos\"\n}",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "bearer",
+          "bearer": {
+            "token": "{{token}}"
+          }
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "Obtener tarea por ID",
+      "seq": 7,
+      "request": {
+        "url": "http://localhost:8080/api/tasks/1",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "bearer",
+          "bearer": {
+            "token": "{{token}}"
+          }
+        }
+      }
+    },
+    {
+      "type": "http",
+      "name": "eliminar tarea",
+      "seq": 8,
+      "request": {
+        "url": "http://localhost:8080/api/tasks/1",
+        "method": "DELETE",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "bearer",
+          "bearer": {
+            "token": "{{token}}"
+          }
+        }
+      }
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "coleccion desafio tecnico",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "size": 0,
+    "filesCount": 0
+  }
+}

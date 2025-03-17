@@ -1,0 +1,218 @@
+openapi: 3.0.1
+info:
+  title: API de Gestión de Tareas
+  description: API REST para gestionar tareas con autenticación JWT.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Servidor local
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: admin@tareas.com
+        password:
+          type: string
+          example: admin123
+    JWTResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6...
+    TaskCreateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Terminar reporte
+        description:
+          type: string
+          example: Completar el informe mensual para gerencia
+    TaskUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        statusName:
+          type: string
+          example: IN_PROGRESS
+    UpdateTaskStatusRequest:
+      type: object
+      properties:
+        statusName:
+          type: string
+          example: COMPLETED
+    TaskResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        statusName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskStatusHistoryResponse'
+    TaskStatusHistoryResponse:
+      type: object
+      properties:
+        statusName:
+          type: string
+        changedAt:
+          type: string
+          format: date-time
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Token JWT generado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWTResponse'
+
+  /api/tasks:
+    get:
+      summary: Obtener mis tareas
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskResponse'
+    post:
+      summary: Crear nueva tarea
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreateRequest'
+      responses:
+        '200':
+          description: Tarea creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+
+  /api/tasks/{id}:
+    get:
+      summary: Obtener tarea por ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tarea obtenida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+    put:
+      summary: Actualizar tarea
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdateRequest'
+      responses:
+        '200':
+          description: Tarea actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+    delete:
+      summary: Eliminar tarea
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea eliminada
+
+  /api/tasks/{id}/status:
+    patch:
+      summary: Cambiar estado de la tarea
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskStatusRequest'
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
