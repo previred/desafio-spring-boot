@@ -1,0 +1,232 @@
+openapi: 3.0.0
+info:
+  title: "Task Management API"
+  description: "API para la gestión de tareas con autenticación JWT."
+  version: 1.0.0
+
+servers:
+  - url: "http://localhost:8080"
+    description: "Servidor local de desarrollo"
+
+paths:
+  /api/auth/login:
+    post:
+      operationId: loginUser
+      summary: "Autenticar un usuario y obtener un token JWT"
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUserRequest"
+      responses:
+        "200":
+          description: "Token JWT generado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginUser200Response"
+        "401":
+          description: "Credenciales incorrectas"
+
+  /api/tareas:
+    get:
+      summary: "Obtener todas las tareas con paginación"
+      tags:
+        - Tarea
+      security:
+        - JWT: [ ]
+      description: "Retorna todas las tareas usando paginación"
+      operationId: getAllTareas
+      parameters:
+        - name: page
+          in: query
+          description: "Número de página"
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: "Cantidad de tareas por página"
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: "Lista paginada de tareas"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TareaDto'
+                  totalPages:
+                    type: integer
+                  totalElements:
+                    type: integer
+    post:
+      operationId: createTarea
+      summary: "Crear una nueva tarea"
+      tags:
+        - Tarea
+      security:
+        - JWT: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaDto'
+      responses:
+        '201':
+          description: "Tarea creada"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaDto'
+        "400":
+          description: Datos inválidos en la solicitud
+
+  /api/tareas/{id}:
+    get:
+      operationId: getTareaById
+      summary: "Obtener una tarea por ID"
+      tags:
+        - Tarea
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Tarea encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TareaDto"
+        "404":
+          description: "Tarea no encontrada"
+    put:
+      operationId: updateTarea
+      summary: "Actualizar una tarea por ID"
+      tags:
+        - Tarea
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TareaDto"
+      responses:
+        "200":
+          description: "Tarea actualizada"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaDto'
+        "400":
+          description: "Datos inválidos"
+        "404":
+          description: "Tarea no encontrada"
+    delete:
+      operationId: deleteTarea
+      summary: "Eliminar una tarea por ID"
+      tags:
+        - Tarea
+      security:
+        - JWT: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: "Tarea eliminada"
+        "404":
+          description: "Tarea no encontrada"
+
+components:
+  schemas:
+    UsuarioDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: "admin"
+        email:
+          type: string
+          example: "admin@nuevo.spa"
+
+    TareaDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        titulo:
+          type: string
+          example: "Revisar documentación"
+        descripcion:
+          type: string
+          example: "Revisar la documentación del proyecto"
+        usuario:
+          $ref: "#/components/schemas/UsuarioDto"
+        estado:
+          $ref: "#/components/schemas/EstadoTareaDto"
+
+    EstadoTareaDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          example: "Pendiente"
+
+    LoginUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "admin"
+        password:
+          type: string
+          example: "admin123"
+
+    LoginUser200Response:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

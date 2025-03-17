@@ -1,0 +1,51 @@
+### Maven ###
+target/
+*.jar
+*.war
+*.ear
+.mvn/
+
+### Maven Wrapper ###
+mvnw
+mvnw.cmd
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+.nb-gradle/
+
+### Visual Studio Code ###
+.vscode/
+
+### MacOS ###
+.DS_Store
+
+### Windows ###
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+### Logs ###
+*.log
+
+### Archivos temporales ###
+*~
+*.swp
