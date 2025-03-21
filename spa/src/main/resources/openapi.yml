@@ -1,0 +1,264 @@
+openapi: 3.0.1
+info:
+  title: Task Management API
+  version: "1.0"
+  description: |
+    API for managing tasks with JWT authentication.
+    This API allows users to authenticate, create, update, and delete tasks.
+  contact:
+    email: soporte@nuevospa.com
+    name: Soporte Técnico
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: http://localhost:8081
+    description: Local development server
+  - url: https://api.nuevospa.com
+    description: Production server
+paths:
+  /auth/login:
+    post:
+      summary: Authenticate user and generate JWT
+      description: |
+        Authenticates a user by validating their credentials (username and password).
+        If successful, returns a JWT token that can be used to access protected endpoints.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCredentials"
+            example:
+              username: "user123"
+              password: "password123"
+      responses:
+        '200':
+          description: JWT token generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        '400':
+          description: Bad Request - Invalid input data
+        '401':
+          description: Unauthorized - Invalid credentials
+  /auth/register:
+    post:
+      summary: Register a new user
+      description: |
+        Registers a new user by providing the required information.
+        Returns the details of the created user.
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequestDTO"
+            example:
+              id: 0
+              username: "newuser"
+              password: "password123"
+              role: "USER"
+      responses:
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDTO"
+        '400':
+          description: Bad Request - Invalid input data
+  /tasks:
+    get:
+      summary: Get all tasks
+      description: |
+        Returns a list of tasks for the authenticated user.
+        Requires a valid JWT token in the Authorization header.
+      operationId: getTasks
+      security:
+        - BearerAuth: [] # Security applied for this endpoint
+      responses:
+        '200':
+          description: List of tasks retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+        '401':
+          description: Unauthorized - Missing or invalid JWT token
+    post:
+      summary: Create a new task
+      description: |
+        Creates a new task for the authenticated user.
+        Requires a valid JWT token in the Authorization header.
+      operationId: createTask
+      security:
+        - BearerAuth: [] # Security applied for this endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequestDTO"
+            example:
+              id: 1
+              description: "Complete the project report"
+              status: "PENDING"
+              userId: 123
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        '400':
+          description: Bad Request - Invalid input data
+        '401':
+          description: Unauthorized - Missing or invalid JWT token
+    put:
+      summary: Update an existing task
+      description: |
+        Updates an existing task for the authenticated user.
+        Requires a valid JWT token in the Authorization header.
+      operationId: updateTask
+      security:
+        - BearerAuth: [] # Security applied for this endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequestDTO"
+            example:
+              id: 1
+              description: "Update the project report"
+              status: "IN_PROGRESS"
+              userId: 123
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        '400':
+          description: Bad Request - Invalid input data
+        '401':
+          description: Unauthorized - Missing or invalid JWT token
+    delete:
+      summary: Delete an existing task
+      description: |
+        Deletes an existing task for the authenticated user.
+        Requires a valid JWT token in the Authorization header.
+      operationId: deleteTask
+      security:
+        - BearerAuth: [] # Security applied for this endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the task to delete
+      responses:
+        '204':
+          description: Task deleted successfully
+        '401':
+          description: Unauthorized - Missing or invalid JWT token
+components:
+  schemas:
+    UserCredentials:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "user123"
+        password:
+          type: string
+          example: "password123"
+      required:
+        - username
+        - password
+    UserRequestDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          example: "newuser"
+          description: Username of the user.
+        password:
+          type: string
+          example: "password123"
+          description: Password for the user.
+        role:
+          type: string
+          example: "USER"
+          description: Role assigned to the user.
+      required:
+        - username
+        - password
+        - role
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: "newuser"
+        role:
+          type: string
+          example: "USER"
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        description:
+          type: string
+          example: "Complete the project report"
+        status:
+          type: string
+          example: "PENDING"
+        userId:
+          type: integer
+          example: 123
+      required:
+        - description
+        - status
+    TaskRequestDTO:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "Complete the project report"
+          description: Description of the task.
+        status:
+          type: string
+          example: "PENDING"
+          description: Status of the task (e.g., PENDING, IN_PROGRESS, COMPLETED).
+      required:
+        - description
+        - status
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        Use a valid JWT token to authenticate.
+        Example: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
+security:
+  - BearerAuth: [] # Global security applied to all endpoints

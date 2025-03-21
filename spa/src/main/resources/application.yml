@@ -1,0 +1,40 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: spa
+    password: spa123
+  h2:
+    console:
+      enabled: true
+      path: /h2-console # Define la ruta de la consola
+      settings:
+        trace: true
+        web-allow-others: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+
+logging:
+  level:
+    org.hibernate.SQL: WARN
+    org.springframework.security: INFO
+    io.jsonwebtoken: INFO
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    url: /v3/api-docs
+  cache:
+    disabled: true
+
+jwt:
+  secret-key: "mYVuX/9qRg6K8Rv5GpkGlmrKFXk9tHC3C9MwV9aV68XWrvLzNhDQStjAoy+VfoP8"
+  expiration-time: 86400000 # 24 horas en milisegundos

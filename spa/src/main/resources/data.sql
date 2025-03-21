@@ -1,0 +1,22 @@
+-- Crear la tabla USERS
+CREATE TABLE IF NOT EXISTS USERS (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL
+);
+
+
+INSERT INTO USERS (username, password, role) VALUES
+('user123', '$2a$10$2jouCsuLtKiCPlvhkTPFaeA9627.SpNbOIPFOuooh3x0NvBKUEHeC', 'USER'), -- Contraseña: password123 (hash)
+('admin', '$2a$10$X6nduXgCdJbw0gvG5lkdYOTs7LypmqkLJ110qT.pPF9afAwuL8eOi', 'ADMIN');  -- Contraseña: admin123 (hash)
+
+CREATE TABLE IF NOT EXISTS TASK_STATUS (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE
+);
+
+INSERT INTO TASK_STATUS (name) VALUES
+('PENDING'),
+('IN_PROGRESS'),
+('COMPLETED');
