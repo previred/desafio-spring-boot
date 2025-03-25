@@ -1,0 +1,10 @@
+INSERT INTO usuarios(id,habilitado,rol,pass,user_name) VALUES(1,true,'admin','$2a$10$WeYwAkuolA6w/P6a7BKYMefHNT1A/Bs0D.ONXxmvV4gGBEB0HJ5oi','mmartinez');
+INSERT INTO usuarios(id,habilitado,rol,pass,user_name) VALUES(2,true,'client','$2a$10$WeYwAkuolA6w/P6a7BKYMefHNT1A/Bs0D.ONXxmvV4gGBEB0HJ5oi','cliente');
+INSERT INTO usuarios(id,habilitado,rol,pass,user_name) VALUES(3,true,'view','$2a$10$WeYwAkuolA6w/P6a7BKYMefHNT1A/Bs0D.ONXxmvV4gGBEB0HJ5oi','vista');
+INSERT INTO usuarios(id,habilitado,rol,pass,user_name) VALUES(4,true,'visit','$2a$10$WeYwAkuolA6w/P6a7BKYMefHNT1A/Bs0D.ONXxmvV4gGBEB0HJ5oi','visita');
+COMMIT;
+INSERT INTO estados_tarea(id,habilitado,estado) VALUES(1,1,'Iniciado');
+INSERT INTO estados_tarea(id,habilitado,estado) VALUES(2,1,'Terminado');
+INSERT INTO estados_tarea(id,habilitado,estado) VALUES(3,1,'En Proceso');
+INSERT INTO estados_tarea(id,habilitado,estado) VALUES(4,1,'En Espera');
+COMMIT;
