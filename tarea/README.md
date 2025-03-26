@@ -5,3 +5,4 @@ GESTION DE TAREAS
 - Para acceder a la base de datos con la siguiente url: http://localhost:8080/h2-ui/ , contraseña definida en archivo application.properties
 - Para acceder a swagger http://localhost:8080/swagger-ui/index.html
 - Para leer openApi http://localhost:8080/v3/api-docs
+- Las contraseñas estan encriptadas con BCrypt
