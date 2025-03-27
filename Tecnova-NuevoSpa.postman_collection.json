@@ -1,0 +1,221 @@
+{
+	"info": {
+		"_postman_id": "319f29a9-0ef9-4a40-a59a-afe8e3a0788d",
+		"name": "Tecnova-NuevoSpa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32723589"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "12345*",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "gcr",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7001/api/nuevospa/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7001",
+					"path": [
+						"api",
+						"nuevospa",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task-GetAll",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnY3IiLCJpZCI6ImdjciIsInVzZXJjb2RlIjoiR0NSLTA5OTAxIiwidXNlciI6eyJ1c2VybmFtZSI6ImdjciIsImNvZGUiOiJHQ1ItMDk5MDEiLCJ0b2tlbkFjY2VzcyI6bnVsbCwidG9rZW5FeHBpcmVkIjpudWxsfSwiaWF0IjoxNzQzMDQwNTMxLCJleHAiOjE3NDMwNDY1MzF9.i2qocqUh7ZZHbBNfjYgbtzNuJlF1-gFAdJ4W_hSz_mo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7001/api/nuevospa/task",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7001",
+					"path": [
+						"api",
+						"nuevospa",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task-GetById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnY3IiLCJpZCI6ImdjciIsInVzZXJjb2RlIjoiR0NSLTA5OTAxIiwidXNlciI6eyJ1c2VybmFtZSI6ImdjciIsImNvZGUiOiJHQ1ItMDk5MDEiLCJ0b2tlbkFjY2VzcyI6bnVsbCwidG9rZW5FeHBpcmVkIjpudWxsfSwiaWF0IjoxNzQzMDQyMzYzLCJleHAiOjE3NDMwNDgzNjN9.pp1PnX2bVOG16KmQTO_OjPZhn5fjdUt4HRbnqt7Z2nk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7001/api/nuevospa/task/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7001",
+					"path": [
+						"api",
+						"nuevospa",
+						"task",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task-DeleteById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnY3IiLCJpZCI6ImdjciIsInVzZXJjb2RlIjoiR0NSLTA5OTAxIiwidXNlciI6eyJ1c2VybmFtZSI6ImdjciIsImNvZGUiOiJHQ1ItMDk5MDEiLCJ0b2tlbkFjY2VzcyI6bnVsbCwidG9rZW5FeHBpcmVkIjpudWxsfSwiaWF0IjoxNzQzMDQwMDAxLCJleHAiOjE3NDMwNDYwMDF9.ZkPc-pEOc3dsv-J4OSBUQYZOfc-6HhWYrHRfDuGgBM8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:7001/api/nuevospa/task/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7001",
+					"path": [
+						"api",
+						"nuevospa",
+						"task",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task-Save",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnY3IiLCJpZCI6ImdjciIsInVzZXJjb2RlIjoiR0NSLTA5OTAxIiwidXNlciI6eyJ1c2VybmFtZSI6ImdjciIsImNvZGUiOiJHQ1ItMDk5MDEiLCJ0b2tlbkFjY2VzcyI6bnVsbCwidG9rZW5FeHBpcmVkIjpudWxsfSwiaWF0IjoxNzQzMDQyMzYzLCJleHAiOjE3NDMwNDgzNjN9.pp1PnX2bVOG16KmQTO_OjPZhn5fjdUt4HRbnqt7Z2nk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Task 1\",\n    \"description\":\"Descrip Task 1\",\n    \"startTask\":\"2025-01-01T05:00:00.000Z\",\n    \"endTask\":\"2025-01-01T15:00:00.000Z\",\n    \"userCode\":\"GCR-09901\",\n    \"statusTaskCode\":\"COMPLETED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7001/api/nuevospa/task",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7001",
+					"path": [
+						"api",
+						"nuevospa",
+						"task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Task-update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnY3IiLCJpZCI6ImdjciIsInVzZXJjb2RlIjoiR0NSLTA5OTAxIiwidXNlciI6eyJ1c2VybmFtZSI6ImdjciIsImNvZGUiOiJHQ1ItMDk5MDEiLCJ0b2tlbkFjY2VzcyI6bnVsbCwidG9rZW5FeHBpcmVkIjpudWxsfSwiaWF0IjoxNzQzMDQxMDE0LCJleHAiOjE3NDMwNDcwMTR9.u2WX8gLhQRK7qU6WbFFYQRU9shSWZzPVJGOcUtCJD3U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":1,\n    \"name\":\"Task 1\",\n    \"description\":\"Descrip Task 1\",\n    \"startTask\":\"2025-01-01T05:00:00.000Z\",\n    \"endTask\":\"2025-01-01T15:00:00.000Z\",\n    \"userCode\":\"GCR-09901\",\n    \"statusTaskCode\":\"COMPLETED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7001/api/nuevospa/task",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7001",
+					"path": [
+						"api",
+						"nuevospa",
+						"task"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

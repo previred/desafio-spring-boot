@@ -1,72 +1,33 @@
 # Desafío Técnico: Gestión de Tareas con Spring Boot y Java
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI y Swagger.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+- Nombre:Giovanny Camacho Rodriguez
+- Correo:Giovannycr004@gmail.com
+- Cargo al caul me postulo: Desarrollador FullStack Java React
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 17 para la implementación.
-- Utiliza las características de Java 17, como lambdas y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias
 
-### Spring Boot 3.4.x:
-- Construye la aplicación utilizando Spring Boot 3.4.x (última versión disponible).
+# Con relación al desafio relaciono:
 
-### Base de Datos:
+En la raiz del directorio adjunto projecto de postman, adicional:
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+- Url Swagger http://localhost:7001/api/nuevospa/swagger-ui/index.html#/
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
 
-### JWT (JSON Web Token):
+# Credenciales de BD
+- Password de BD: 12345*
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+# Secret Key de JWT
+- Key token de jwt: Gcr1010*
 
-### OpenAPI y Swagger:
+# Se implementa Jasypt para encriptar valores sensibles del properties
+- Key secret de Jasypt: GcrNuevoSpa12345*
+- Url de referencia para encriptar los valores https://www.devglan.com/online-tools/jasypt-online-encryption-decryption
+- ENC(#VALUE ENCRIPT#) donde, #VALUE ENCRIPT# es el valor obtenido de la url de referencia colocando el secret key de Jasypt  
 
-- Documenta la API utilizando OpenAPI y Swagger.
+# Credenciales de usuario de prueba
+- User: gcr, Pass: 12345* , PassEncript: $2a$10$K5S4nIrYFFRjBGF2MldpqeHOY/4Wo1yL8jEeYvnhlZ4neC01qJWJO
+- User: gcr2, Pass: 123456* , PassEncript: $2a$10$SqcuLg88xyQbJNL5Af4y7eQ4GSGApow.ArwriBKoPYM7YU6J/dgAO
+- User: gcr3, Pass: 1234567* , PassEncript: $2a$10$yyeh8l7iajYL3ZbxWKjIYOOIDWqqnYoP6zJgGHwukXohmcr7wk1zC
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+# Gracias.
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
-
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
-
-### Documentación:
-- Utiliza OpenAPI y Swagger para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
-
-### Código Limpio:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
-
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
-
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
-
-### Documentación:
-- Incluye instrucciones claras sobre cómo ejecutar y probar la aplicación.
-- **Incluir Json de prueba en un archivo texto o mediante un proyecto postman** Nota: Si no va se restaran puntos de la evaluación
-
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
-
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 17, Spring Boot 3.4.x, H2, JWT, OpenAPI y Swagger.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
