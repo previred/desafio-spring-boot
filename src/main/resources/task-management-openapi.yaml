@@ -1,0 +1,305 @@
+openapi: 3.0.1
+info:
+  title: Task Management - HF Solutions
+  description: "Task Management API for HF Solutions challeng"
+  contact:
+    email: cristiansaezv@gmail.com
+    name: Cristian Sáez V.
+    url: https://www.linkedin.com/in/cristian-saez-developer/
+  version: "0.1-beta"
+servers:
+  - url: https://notdomain.com/task-management
+    description: DEV
+tags:
+  - name: Authentication
+  - name: Task
+paths:
+  /auth/login:
+    post:
+      summary: User login
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Login success!
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - "token"
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Unauthorized
+      tags:
+        - Authentication
+  /auth/register:
+    post:
+      summary: User register
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+      tags:
+        - Authentication
+  /task:
+    post:
+      summary: Create Task
+      operationId: createTask
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskProperties"
+      responses:
+        "201":
+          description: Task created successfully!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        default:
+          description: Oops internal server error :(!
+      security:
+        - JWTAuth: []
+      tags:
+        - Task
+  /task/{taskId}:
+    get:
+      summary: Get a task
+      operationId: getTask
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/TaskId"
+      responses:
+        "200":
+          description: Return task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Not found!
+        default:
+          description: Oops internal server error :(!
+      security:
+        - JWTAuth: []
+      tags:
+        - Task
+    patch:
+      summary: Update task
+      operationId: updateTask
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/TaskId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskProperties"
+      responses:
+        "200":
+          description: Update task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "400":
+          description: Bad request
+        default:
+          description: Oops internal server error :(!
+      security:
+        - JWTAuth: []
+      tags:
+        - Task
+    delete:
+      summary: Detele task
+      operationId: deleteTask
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/TaskId"
+      responses:
+        "204":
+          description: The task was successfully deleted!
+        default:
+          description: Oops internal server error :(!
+      security:
+        - JWTAuth: []
+      tags:
+        - Task
+  /task/:
+    get:
+      summary: Get all task for current user
+      operationId: getAllTask
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+      responses:
+        "200":
+          description: Get all task for current user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+        default:
+          description: Oops internal server error :(!
+      security:
+        - JWTAuth: []
+      tags:
+        - Task
+  /task/{taskId}/status/{statusId}:
+    patch:
+      summary: Changes the status of a task.
+      operationId: taskStatus
+      parameters:
+        - $ref: "#/components/parameters/Authorization"
+        - $ref: "#/components/parameters/TaskId"
+        - $ref: "#/components/parameters/StatusId"
+      responses:
+        "204":
+          description: Status update successfully!
+        default:
+          description: Oops internal server error :(
+      security:
+        - JWTAuth: []
+      tags:
+        - Task
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: idn-email
+          example: tony.stark@avengers.com
+          pattern: ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
+        password:
+          type: string
+          pattern: ^[A-Za-z\d!@#$%^&*()_+\-=\[\]{}|;':,.`~]{8,}$
+          description: Security password
+          example: miPass_123
+    Message:
+      title: Message
+      type: object
+      required:
+        - message
+        - details
+      properties:
+        message:
+          type: string
+          example: Message content
+        details:
+          type: string
+          example: Details of message content
+    Task:
+      title: Task
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/TaskId"
+        - $ref: "#/components/schemas/TaskProperties"
+        - type: object
+          required:
+            - status
+          properties:
+            status:
+              $ref: "#/components/schemas/TaskStatus"
+    TaskStatus:
+      title: Task Status
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: In progress
+    TaskId:
+      title: Task Unique Identifier
+      required:
+        - id
+      properties:
+        id:
+          description: Task id
+          type: string
+          format: uuid
+          example: a45139c6-cb28-4df0-9160-9c8b81fce4f9
+    TaskProperties:
+      title: Task Propeties
+      required:
+        - title
+        - description
+      properties:
+        title:
+          description: Title of task
+          type: string
+          example: Create user in app
+        description:
+          description: Description of task
+          type: string
+          example: A user must be created in the application, with the following characteristics...
+  parameters:
+    Authorization:
+      in: header
+      name: Authorization
+      required: true
+      schema:
+        type: string
+        example: Bearer mi_token
+    TaskId:
+      in: path
+      name: taskId
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: fa829ebc-cb2a-4373-84af-27b53b085581
+    StatusId:
+      in: path
+      name: statusId
+      required: true
+      schema:
+        type: integer
+        example: 2
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Authorization
