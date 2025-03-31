@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gestion-tareas
+
+  datasource:
+    url: jdbc:h2:mem:gestiontareasdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 5
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    oauth:
+      use-basic-authentication-with-access-code: true
+  api-docs:
+    path: /v3/api-docs
+  override-with-generic-response: false
+  writer-with-default-pretty-printer: true
+  default-produces-media-type: application/json
+  paths-to-match: /**
