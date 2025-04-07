@@ -1,10 +1,10 @@
-package cl.previred.desafio;
+package cl.previred.desafio.taskmanager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DesafioApplicationTests {
+class TaskManagerApplicationTests {
 
 	@Test
 	void contextLoads() {

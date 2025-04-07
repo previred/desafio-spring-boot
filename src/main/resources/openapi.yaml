@@ -169,6 +169,9 @@ components:
             id:
               type: string
               example: "abc-1"
+            status:
+              type: string
+              example: "done"
             createdAt:
               type: string
               format: date-time

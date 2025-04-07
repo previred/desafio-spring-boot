@@ -1,13 +1,13 @@
-package cl.previred.desafio;
+package cl.previred.desafio.taskmanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DesafioApplication {
+public class TaskManagerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DesafioApplication.class, args);
+		SpringApplication.run(TaskManagerApplication.class, args);
 	}
 
 }
