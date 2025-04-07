@@ -1,0 +1,183 @@
+http://localhost:8080/login
+POST(Validar login)
+Request:
+{
+    "username":"usuario1",
+    "password":"admin"
+}
+Response:
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c3VhcmlvMSIsInJvbGUiOiJST0xFX0FETUlOIiwiaWF0IjoxNzQ0MDM2NDE4LCJleHAiOjE3NDQwNjUyMTh9.l-wxDQKKaVi79lDIg0w-nBcv7owEiPhqkivmh0yeIgNiHbvUaRV2gTJEyt9qJ3H0",
+    "username": "usuario1"
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+http://localhost:8080/tareas
+POST (Crear tarea)
+Headers: Authentication (JWT)
+Request:
+{
+    "nombre":"nombre",
+    "descripcion":"descripcion",
+    "estadoTareaId":1,
+    "usuarioAsignadoId":1
+}
+Response:
+{
+    "id": 1,
+    "nombre": "nombre",
+    "descripcion": "descripcion",
+    "estado": "Pendiente",
+    "fechaCreacion": "07-04-2025 10:34:35",
+    "fechaAsignacion": "07-04-2025 10:34:35",
+    "usuarioCreador": {
+        "id": 1,
+        "username": "usuario1"
+    },
+    "usuarioAsignado": {
+        "id": 1,
+        "username": "usuario1"
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+http://localhost:8080/tareas
+GET(Obtener todas las tareas)
+Headers: Authentication (JWT)
+Response:
+[
+    {
+        "id": 1,
+        "nombre": "nombre",
+        "descripcion": "descripcion",
+        "estado": "Pendiente",
+        "fechaCreacion": "07-04-2025 10:34:35",
+        "fechaAsignacion": "07-04-2025 10:34:35",
+        "usuarioCreador": {
+            "id": 1,
+            "username": "usuario1"
+        },
+        "usuarioAsignado": {
+            "id": 1,
+            "username": "usuario1"
+        }
+    },
+    {
+        "id": 2,
+        "nombre": "nombre2",
+        "descripcion": "descripcion2",
+        "estado": "En progreso",
+        "fechaCreacion": "07-04-2025 10:35:56",
+        "fechaAsignacion": "07-04-2025 10:35:56",
+        "usuarioCreador": {
+            "id": 1,
+            "username": "usuario1"
+        },
+        "usuarioAsignado": {
+            "id": 2,
+            "username": "usuario2"
+        }
+    }
+]
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+http://localhost:8080/tareas/1
+GET(Obtener tarea por id)
+Headers: Authentication (JWT)
+Response:
+{
+    "id": 1,
+    "nombre": "nombre",
+    "descripcion": "descripcion",
+    "estado": "Pendiente",
+    "fechaCreacion": "07-04-2025 10:34:35",
+    "fechaAsignacion": "07-04-2025 10:34:35",
+    "usuarioCreador": {
+        "id": 1,
+        "username": "usuario1"
+    },
+    "usuarioAsignado": {
+        "id": 1,
+        "username": "usuario1"
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+http://localhost:8080/tareas/findBy?estadoTareaId=1
+GET(Obtener tareas por estado)
+Headers: Authentication (JWT)
+Response:
+[
+    {
+        "id": 1,
+        "nombre": "nombre",
+        "descripcion": "descripcion",
+        "estado": "Pendiente",
+        "fechaCreacion": "07-04-2025 10:34:35",
+        "fechaAsignacion": "07-04-2025 10:34:35",
+        "usuarioCreador": {
+            "id": 1,
+            "username": "usuario1"
+        },
+        "usuarioAsignado": {
+            "id": 1,
+            "username": "usuario1"
+        }
+    },
+        {
+            "id": 2,
+            "nombre": "nombre2",
+            "descripcion": "descripcion2",
+            "estado": "Pendiente",
+            "fechaCreacion": "07-04-2025 10:34:35",
+            "fechaAsignacion": "07-04-2025 10:34:35",
+            "usuarioCreador": {
+                "id": 1,
+                "username": "usuario1"
+            },
+            "usuarioAsignado": {
+                "id": 1,
+                "username": "usuario1"
+            }
+        }
+]
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+http://localhost:8080/tareas
+PUT (Actualizar tarea)
+Headers: Authentication (JWT)
+Request:
+{
+    "id":1,
+    "nombre":"nombre1",
+    "descripcion":"descripcion1",
+    "estadoTareaId":3,
+    "usuarioAsignadoId":2
+}
+Response:
+{
+    "id": 1,
+    "nombre": "nombre1",
+    "descripcion": "descripcion1",
+    "estado": "Completada",
+    "fechaCreacion": "07-04-2025 10:34:35",
+    "fechaAsignacion": "07-04-2025 10:34:35",
+    "usuarioCreador": {
+        "id": 1,
+        "username": "usuario1"
+    },
+    "usuarioAsignado": {
+        "id": 1,
+        "username": "usuario1"
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+http://localhost:8080/tareas/assign/{tareaId}/{usuarioAsignadoId}
+PATCH (Asignar tarea a otro usuario)
+Headers: Authentication (JWT)
+Response: Void (204 No Content)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+http://localhost:8080/tareas/{tareaId}/
+DELETE (Eliminar tarea)
+Headers: Authentication (JWT)
+Response: Void (204 No Content)

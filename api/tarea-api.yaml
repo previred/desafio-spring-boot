@@ -1,0 +1,245 @@
+openapi: 3.0.1
+info:
+  title: API de Tareas
+  version: 1.0.0
+  description: CRUD de Tareas - API First
+
+paths:
+  /tareas:
+    post:
+      summary: Crear Tarea
+      description: Crea una nueva tarea
+      operationId: createTarea
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaCreateRequest'
+      responses:
+        '201':
+          description: Tarea creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+        '404':
+          description: Usuario/Estado no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+    put:
+      summary: Actualizar Tarea
+      description: Actualiza una tarea existente
+      operationId: updateTarea
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaUpdateRequest'
+      responses:
+        '200':
+          description: Tarea actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+        '404':
+          description: Tarea/Usuario/Estado no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+    get:
+      summary: Listar Tareas
+      description: Lista todas las tareas
+      operationId: readAllTareas
+      responses:
+        '200':
+          description: Tareas encontradas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TareaResponse'
+
+  /tareas/{tareaId}:
+    delete:
+      summary: Eliminar Tarea
+      description: Elimina una tarea existente
+      operationId: deleteTarea
+      parameters:
+        - name: tareaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea eliminada exitosamente
+        '404':
+          description: Tarea no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+  /tareas/findById/{tareaId}:
+    get:
+      summary: Buscar Tarea por ID
+      description: Busca una tarea por su ID
+      operationId: readTareaById
+      parameters:
+        - name: tareaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaResponse'
+        '404':
+          description: Tarea no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExceptionResponse'
+
+  /tareas/asignar:
+    put:
+      summary: Asignar Tarea
+      description: Asigna una tarea a un estado
+      operationId: assignTarea
+      parameters:
+        - name: tareaId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: usuarioId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea asignada
+
+  /tareas/findBy:
+    get:
+      summary: Buscar Tareas por Estado
+      description: Busca tareas por su estado
+      operationId: readByEstadoTareaId
+      parameters:
+        - name: estadoTareaId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tareas encontradas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TareaResponse'
+
+components:
+  schemas:
+    TareaCreateRequest:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        estadoTareaId:
+          type: integer
+        usuarioAssignadoId:
+          type: integer
+
+    TareaUpdateRequest:
+      type: object
+      required:
+        - id
+        - nombre
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        estadoTareaId:
+          type: integer
+        usuarioAssignadoId:
+          type: integer
+
+    TareaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        estado:
+          type: string
+        fechaCreacion:
+          type: string
+          format: date-time
+        fechaAsignacion:
+          type: string
+          format: date-time
+        usuarioCreador:
+          $ref: '#/components/schemas/UsuarioResponse'
+        usuarioAsignado:
+          $ref: '#/components/schemas/UsuarioResponse'
+
+    UsuarioResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        email:
+          type: string
+
+    ExceptionResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+        detail:
+          type: string
