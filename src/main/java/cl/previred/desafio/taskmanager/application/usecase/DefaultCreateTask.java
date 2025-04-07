@@ -1,4 +1,4 @@
-package cl.previred.desafio.taskmanager.application;
+package cl.previred.desafio.taskmanager.application.usecase;
 
 import cl.previred.desafio.taskmanager.domain.model.Task;
 import cl.previred.desafio.taskmanager.domain.ports.out.CreateTaskRepository;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class DefaultCreateTask implements CreateTaskUseCase {
 
-    private CreateTaskRepository createTaskRepository;
+    private final CreateTaskRepository createTaskRepository;
 
     @Override
     public Task execute(Task task) {

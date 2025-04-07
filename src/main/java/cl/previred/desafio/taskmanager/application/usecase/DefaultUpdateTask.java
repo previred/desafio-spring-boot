@@ -1,4 +1,4 @@
-package cl.previred.desafio.taskmanager.application;
+package cl.previred.desafio.taskmanager.application.usecase;
 
 import cl.previred.desafio.taskmanager.domain.model.Task;
 import cl.previred.desafio.taskmanager.domain.usecase.UpdateTaskUseCase;

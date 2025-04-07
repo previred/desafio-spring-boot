@@ -157,9 +157,13 @@ components:
         description:
           type: string
           example: "Descripcion de la tarea"
+        createdBy:
+          type: string
+          example: "username"
       required:
         - title
         - description
+        - createdBy
 
     TaskResponse:
       allOf:
