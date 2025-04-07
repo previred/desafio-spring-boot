@@ -3,6 +3,7 @@ package cl.previred.desafio.taskmanager.infrastructure.web;
 import cl.previred.desafio.taskmanager.domain.model.BasicTask;
 import cl.previred.desafio.taskmanager.domain.model.Task;
 import cl.previred.desafio.taskmanager.domain.usecase.CreateTaskUseCase;
+import cl.previred.desafio.taskmanager.domain.usecase.DeleteTaskUseCase;
 import cl.previred.desafio.taskmanager.domain.usecase.ListTasksUseCase;
 import cl.previred.desafio.taskmanager.infrastructure.web.dto.CreateTaskRequest;
 import cl.previred.desafio.taskmanager.infrastructure.web.dto.TaskDtoMapper;
@@ -24,6 +25,8 @@ public class TaskController {
 
     private final CreateTaskUseCase createTaskUseCase;
     private final ListTasksUseCase listTasksUseCase;
+    private final DeleteTaskUseCase deleteTaskUseCase;
+
     private final TaskDtoMapper taskDtoMapper;
 
     @PostMapping
@@ -56,6 +59,20 @@ public class TaskController {
 
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<Void> deleteTask(
+            @PathVariable String taskId) {
+
+        boolean wasDeleted = deleteTaskUseCase.execute(taskId);
+
+        if (!wasDeleted) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
 
     private Map<String, String> buildErrorResponse(BindingResult bindingResult) {
         Map<String, String> errors = new HashMap<>();
