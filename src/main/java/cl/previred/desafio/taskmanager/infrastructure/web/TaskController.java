@@ -3,10 +3,7 @@ package cl.previred.desafio.taskmanager.infrastructure.web;
 import cl.previred.desafio.taskmanager.domain.model.BasicTask;
 import cl.previred.desafio.taskmanager.domain.model.Task;
 import cl.previred.desafio.taskmanager.domain.model.TaskStatus;
-import cl.previred.desafio.taskmanager.domain.usecase.CreateTaskUseCase;
-import cl.previred.desafio.taskmanager.domain.usecase.DeleteTaskUseCase;
-import cl.previred.desafio.taskmanager.domain.usecase.ListTasksUseCase;
-import cl.previred.desafio.taskmanager.domain.usecase.UpdateTaskUseCase;
+import cl.previred.desafio.taskmanager.domain.usecase.*;
 import cl.previred.desafio.taskmanager.infrastructure.web.dto.CreateTaskRequest;
 import cl.previred.desafio.taskmanager.infrastructure.web.dto.TaskDtoMapper;
 import cl.previred.desafio.taskmanager.infrastructure.web.dto.TaskResponse;
@@ -30,6 +27,7 @@ public class TaskController {
     private final ListTasksUseCase listTasksUseCase;
     private final DeleteTaskUseCase deleteTaskUseCase;
     private final UpdateTaskUseCase updateTaskUseCase;
+    private final RetrieveTaskUseCase retrieveTaskUseCase;
 
     private final TaskDtoMapper taskDtoMapper;
 
@@ -79,6 +77,16 @@ public class TaskController {
 
         return ResponseEntity.ok(taskDtoMapper.toResponse((BasicTask) updatedTask));
     }
+
+    @GetMapping("/{taskId}")
+    public ResponseEntity<TaskResponse> getTask(
+            @PathVariable String taskId
+    ){
+        Task task = retrieveTaskUseCase.execute(taskId);
+
+        return ResponseEntity.ok(taskDtoMapper.toResponse((BasicTask) task));
+    }
+
 
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(
