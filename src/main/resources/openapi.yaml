@@ -12,23 +12,23 @@ security:
 
 paths:
 
-  /token:
+  /auth/login:
     post:
-      summary: Obtener token.
-      operationId: token
+      summary: Autenticar usuario
+      operationId: login
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenRequest'
+              $ref: '#/components/schemas/AuthRequest'
       responses:
         '200':
-          description: Token generado
+          description: Generar token para usuario autenticado
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/AuthResponse'
         '401':
           description: Credenciales inválidas
 
@@ -128,7 +128,7 @@ components:
 
   schemas:
 
-    TokenRequest:
+    AuthRequest:
       type: object
       properties:
         username:
@@ -141,7 +141,7 @@ components:
         - username
         - password
 
-    TokenResponse:
+    AuthResponse:
       type: object
       properties:
         token:
