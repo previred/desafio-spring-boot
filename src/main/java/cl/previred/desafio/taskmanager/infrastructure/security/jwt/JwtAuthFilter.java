@@ -44,8 +44,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             UserDetails userDetails = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("No se ha encontrado el usuario"));
 
-            //UserDetails userDetails = User.withUsername(username).password("").roles("USER").build();
-
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,

@@ -25,12 +25,17 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
+
+                                "/api/v1/auth/login",
+                                //H2
                                 "/h2-console",
                                 "/h2-console/**",
-                                "/api/v1/auth/login",
-                                "/v3/api-docs",
-                                "/v3/api-docs.**",
-                                "/swagger-ui/**"
+                                //Swagger
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**"
                                 ).permitAll()
                         .anyRequest().authenticated()
                 )
