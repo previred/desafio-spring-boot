@@ -1,10 +1,12 @@
 package cl.previred.desafio.taskmanager.infrastructure.persistence.jpa.entities;
 
+import cl.previred.desafio.taskmanager.domain.model.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -29,11 +31,13 @@ public class TaskJpaEntity {
     @Column(nullable = false, length = 1000)
     private String description;
 
-    @Column(nullable = false, length = 20)
-    private String status;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserJpaEntity user;
 
-    @Column(name = "created_by", nullable = false, length = 50)
-    private String createdBy;
+    @ManyToOne
+    @JoinColumn(name = "task_status_id")
+    private TaskStatusJpaEntity status;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)

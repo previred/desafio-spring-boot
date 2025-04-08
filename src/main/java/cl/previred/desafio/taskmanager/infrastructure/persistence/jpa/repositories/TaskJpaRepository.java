@@ -7,20 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface TaskJpaRepository extends JpaRepository<TaskJpaEntity, String> {
 
     Optional<TaskJpaEntity> findById(String id);
-    List<TaskJpaEntity> findByCreatedBy(String createdBy);
-    List<TaskJpaEntity> findByStatus(String status);
-
-    List<TaskJpaEntity> findByCreatedBetween(LocalDateTime start, LocalDateTime end);
-    List<TaskJpaEntity> findByLastUpdateBetween(LocalDateTime start, LocalDateTime end);
-
 
     // Actualización directa de estado
     @Modifying
