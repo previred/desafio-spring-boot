@@ -41,11 +41,18 @@ public class TaskController {
                     .body(buildErrorResponse(bindingResult));
         }
 
-        Task task = taskDtoMapper.toDomain(request);
+        try {
 
-        BasicTask createdTask = (BasicTask) createTaskUseCase.execute(task);
+            Task task = taskDtoMapper.toDomain(request);
 
-        return ResponseEntity.ok(taskDtoMapper.toResponse(createdTask));
+            BasicTask createdTask = (BasicTask) createTaskUseCase.execute(task);
+
+            return ResponseEntity.ok(taskDtoMapper.toResponse(createdTask));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
     }
 
     @GetMapping
