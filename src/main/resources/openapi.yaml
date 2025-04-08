@@ -100,7 +100,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TaskRequest'
+              $ref: '#/components/schemas/UpdateTaskRequest'
       responses:
         '200':
           description: Tarea actualizada
@@ -164,6 +164,18 @@ components:
         - title
         - description
         - createdBy
+
+    UpdateTaskRequest:
+      allOf:
+        - $ref: '#/components/schemas/TaskRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: "abc-1"
+            status:
+              type: string
+              example: "done"
 
     TaskResponse:
       allOf:
