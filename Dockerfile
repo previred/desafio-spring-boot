@@ -1,0 +1,51 @@
+FROM maven:3.9-eclipse-temurin-17-alpine AS build
+WORKDIR /app
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
+ENV SERVER_PORT=8080
+
+ENV SPRING_DATASOURCE_URL="jdbc:h2:mem:dsegovia"
+ENV SPRING_DATASOURCE_DRIVERCLASSNAME="org.h2.Driver"
+ENV SPRING_DATASOURCE_USERNAME="dsegovia"
+ENV SPRING_DATASOURCE_PASSWORD="dsegovia"
+
+ENV SPRING_H2_CONSOLE_ENABLED="true"
+ENV SPRING_H2_CONSOLE_PATH="/h2-console"
+ENV SPRING_H2_CONSOLE_SETTINGS_WEB_ALLOW_OTHERS="true"
+
+# Change to create to enable schema creation
+ENV SPRING_JPA_HIBERNATE_DDL_AUTO="create"
+ENV SPRING_JPA_DATABASE_PLATFORM="org.hibernate.dialect.H2Dialect"
+
+# Ensure initialization is deferred until after schema creation
+ENV SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION="true"
+ENV SPRING_SQL_INIT_MODE="always"
+
+# JWT configuration
+ENV JWT_SECRET="9e5d0614d19daa81a5a2671fd0fb5c052ba5ef9764e039fe0874af6328d19755ded2a544e75cfcc4af1a5bb7a7d44f8f53ef09bac497657d64bd07c3aa384658c2e7cc5950123449d402fbd42745b0bfa97051bf873aba0a88d7864ccf9d4ea3bf775df97bcff54cd6b9bb1362046cad20132c9947aedba3aacb4292f98322c4f52c30e04b8ea4f88e56c77d720c4effee93f8e27deaf6fa27e08e8fb9a8a369162b3ad7f52d47361c58d9da5b7c085fd8b73e458442af3e4b9e10ea46dba647c0947bc8fe8388ae819a1c09483ec11d3e6541b02c3cc7380e09d925b7a8992c2899639e693a748b8b5e32a7ac68fe6729ea183cf95816504336ae62f9c43069"
+ENV JWT_EXPIRATION="3600000"
+ENV JWT_HEADER="Authorization"
+ENV JWT_PREFIX="Bearer "
+
+# Actuator configuration
+ENV MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE="health,info"
+ENV MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS="always"
+
+# Logging configuration
+ENV LOGGING_LEVEL_ROOT="INFO"
+ENV LOGGING_LEVEL_DSEGOVIA_DESAFIO="DEBUG"
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

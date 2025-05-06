@@ -1,0 +1,468 @@
+{
+  "info": {
+    "_postman_id": "f1c9a356-5a47-4e0c-9b23-1b2df78a2a2a",
+    "name": "NUEVO SPA - Task Manager API",
+    "description": "Colección de pruebas para la API de gestión de tareas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Login como usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"token\", jsonData.token);",
+                  "pm.environment.set(\"userId\", jsonData.userId);",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response contains token\", function () {",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"user\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Obtener token JWT para usuario común"
+          },
+          "response": []
+        },
+        {
+          "name": "Login como admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = JSON.parse(responseBody);",
+                  "pm.environment.set(\"adminToken\", jsonData.token);",
+                  "pm.environment.set(\"adminId\", jsonData.userId);",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response contains token\", function () {",
+                  "    pm.expect(jsonData).to.have.property('token');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Obtener token JWT para administrador"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints de autenticación y obtención de tokens"
+    },
+    {
+      "name": "Tareas",
+      "item": [
+        {
+          "name": "Listar tareas",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas"
+              ]
+            },
+            "description": "Obtener todas las tareas del usuario autenticado"
+          },
+          "response": []
+        },
+        {
+          "name": "Tareas filtradas por estado",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas?estadoId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas"
+              ],
+              "query": [
+                {
+                  "key": "estadoId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Filtrar tareas por estado PENDIENTE"
+          },
+          "response": []
+        },
+        {
+          "name": "Tareas filtradas por prioridad",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas?prioridad=ALTA",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas"
+              ],
+              "query": [
+                {
+                  "key": "prioridad",
+                  "value": "ALTA"
+                }
+              ]
+            },
+            "description": "Filtrar tareas por prioridad ALTA"
+          },
+          "response": []
+        },
+        {
+          "name": "Tareas filtradas por etiqueta",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas?etiqueta=backend",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas"
+              ],
+              "query": [
+                {
+                  "key": "etiqueta",
+                  "value": "backend"
+                }
+              ]
+            },
+            "description": "Filtrar tareas por etiqueta 'backend'"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener tarea por ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas",
+                "1"
+              ]
+            },
+            "description": "Obtener detalles de una tarea específica"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear nueva tarea",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = JSON.parse(pm.response.text());",
+                  "pm.environment.set(\"nuevaTareaId\", jsonData.id);",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"titulo\": \"Nueva tarea desde Postman\",\n    \"descripcion\": \"Esta es una tarea creada mediante Postman para probar la API\",\n    \"fechaVencimiento\": \"2025-05-30T10:00:00\",\n    \"prioridad\": \"MEDIA\",\n    \"estadoId\": 1,\n    \"etiquetas\": [\"postman\", \"test\", \"api\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas"
+              ]
+            },
+            "description": "Crear una nueva tarea"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar tarea",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"titulo\": \"Tarea actualizada\",\n    \"descripcion\": \"Descripción actualizada desde Postman\",\n    \"fechaVencimiento\": \"2025-06-15T14:30:00\",\n    \"prioridad\": \"ALTA\",\n    \"estadoId\": 2,\n    \"etiquetas\": [\"postman\", \"test\", \"actualizada\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas/{{nuevaTareaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas",
+                "{{nuevaTareaId}}"
+              ]
+            },
+            "description": "Actualizar una tarea existente"
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar tarea",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tareas/{{nuevaTareaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tareas",
+                "{{nuevaTareaId}}"
+              ]
+            },
+            "description": "Eliminar una tarea"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para gestión de tareas"
+    },
+    {
+      "name": "Estados",
+      "item": [
+        {
+          "name": "Listar estados",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/estados",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "estados"
+              ]
+            },
+            "description": "Obtener todos los estados disponibles"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints para consulta de estados de tareas"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
