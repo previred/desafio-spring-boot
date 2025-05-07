@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:taskdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    open-in-view: false
+  h2:
+    console:
+      enabled: true
+jwt:
+  secret: dGhpcy1pcy1hLXNlY3JldC1rZXktdGhhdC1pcy1tb3JlLXNlY3VyZQ==
+  expiration: 86400000
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG

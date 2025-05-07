@@ -1,72 +1,164 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# Task Management API
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI y Swagger.
+## Overview
+This is a Task Management API built with Spring Boot, implementing an API-first approach using OpenAPI. The API allows users to authenticate with JWT and perform CRUD operations on tasks.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+## Prerequisites
+- Java 17 or higher
+- Maven
+- Postman (for testing)
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 17 para la implementación.
-- Utiliza las características de Java 17, como lambdas y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias
+## Setup Instructions
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd task-management/task-management
+   ```
 
-### Spring Boot 3.4.x:
-- Construye la aplicación utilizando Spring Boot 3.4.x (última versión disponible).
+2. **Build the Project**:
+   ```bash
+   mvn clean install
+   ```
 
-### Base de Datos:
+3. **Run the Application**:
+   ```bash
+   mvn spring-boot:run
+   ```
+   - The application will start on `http://localhost:8080`.
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+4. **Access the H2 Database Console** (Optional):
+   - URL: `http://localhost:8080/h2-console`
+   - JDBC URL: `jdbc:h2:mem:taskdb`
+   - Username: `sa`
+   - Password: (leave empty)
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+5. **Access Swagger UI**:
+   - URL: `http://localhost:8080/swagger-ui.html`
 
-### JWT (JSON Web Token):
+## Testing the API
+1. **Import the Postman Collection**:
+   - Import the file `postman_collection.json` (located in the root directory of the project) into Postman.
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+2. **Authenticate**:
+   - Use the `Login` request to authenticate:
+     - **Method**: POST
+     - **URL**: `{{baseUrl}}/api/auth/login`
+     - **Body**:
+       ```json
+       {
+           "username": "admin",
+           "password": "password"
+       }
+       ```
+     - The response will contain a JWT token, which is automatically saved in the `token` variable.
 
-### OpenAPI y Swagger:
+3. **Test CRUD Operations**:
+   - Use the other requests (`Create Task`, `List Tasks`, `Get Task by ID`, `Update Task`, `Delete Task`) to test the API.
+   - Ensure the `Authorization` header is set to `Bearer {{token}}` for all requests except `Login`.
+   - For the `Delete Task` request, the API will return:
+     - `204 No Content` with a header `X-Message: La tarea se encontró y se borró` if the task is found and deleted.
+     - `404 Not Found` with a body `{"error": "Id de tarea no encontrado: <id>"}` if the task does not exist.
+   - To avoid caching issues in Postman, all requests include the header `Cache-Control: no-cache`.
 
-- Documenta la API utilizando OpenAPI y Swagger.
+## API Endpoints
+- **POST /api/auth/login**: Authenticate and obtain a JWT token.
+  - **Response**: `200 OK`
+  - **Example Response**:
+    ```json
+    {
+        "token": "eyJhbGciOiJIUzI1NiJ9..."
+    }
+    ```
+- **GET /api/tasks**: List all tasks.
+  - **Response**: `200 OK`
+  - **Example Response**:
+    ```json
+    [
+        {
+            "id": 1,
+            "title": "Sample Task",
+            "description": "This is a sample task",
+            "status": {
+                "id": 1,
+                "name": "PENDING"
+            },
+            "userId": 1
+        }
+    ]
+    ```
+- **POST /api/tasks**: Create a new task.
+  - **Response**: `201 Created`
+  - **Example Request**:
+    ```json
+    {
+        "title": "Sample Task",
+        "description": "This is a sample task",
+        "statusId": 1,
+        "userId": 1
+    }
+    ```
+  - **Example Response**:
+    ```json
+    {
+        "id": 1,
+        "title": "Sample Task",
+        "description": "This is a sample task",
+        "status": {
+            "id": 1,
+            "name": "PENDING"
+        },
+        "userId": 1
+    }
+    ```
+- **GET /api/tasks/{id}**: Get a task by ID.
+  - **Response**: `200 OK` or `404 Not Found`
+  - **Example Response**:
+    ```json
+    {
+        "id": 1,
+        "title": "Sample Task",
+        "description": "This is a sample task",
+        "status": {
+            "id": 1,
+            "name": "PENDING"
+        },
+        "userId": 1
+    }
+    ```
+- **PUT /api/tasks/{id}**: Update a task.
+  - **Response**: `200 OK` or `404 Not Found`
+  - **Example Request**:
+    ```json
+    {
+        "title": "Updated Task",
+        "description": "This is an updated task",
+        "statusId": 2,
+        "userId": 1
+    }
+    ```
+  - **Example Response**:
+    ```json
+    {
+        "id": 1,
+        "title": "Updated Task",
+        "description": "This is an updated task",
+        "status": {
+            "id": 2,
+            "name": "IN_PROGRESS"
+        },
+        "userId": 1
+    }
+    ```
+- **DELETE /api/tasks/{id}**: Delete a task.
+  - **Response**:
+    - `204 No Content` with header `X-Message: La tarea se encontró y se borró` if the task is found and deleted.
+    - `404 Not Found` with body `{"error": "Id de tarea no encontrado: <id>"}` if the task does not exist.
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+## Notes
+- The application uses an in-memory H2 database, preloaded with users (`admin` and `user`) and task statuses (`PENDING`, `IN_PROGRESS`, `COMPLETED`).
+- The JWT secret and expiration are configured in `application.yml`.
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
-
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
-
-### Documentación:
-- Utiliza OpenAPI y Swagger para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
-
-### Código Limpio:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
-
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
-
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
-
-### Documentación:
-- Incluye instrucciones claras sobre cómo ejecutar y probar la aplicación.
-- **Incluir Json de prueba en un archivo texto o mediante un proyecto postman** Nota: Si no va se restaran puntos de la evaluación
-
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
-
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 17, Spring Boot 3.4.x, H2, JWT, OpenAPI y Swagger.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+## Author
+- Name: Sebastian Botero Sanchez
+- Email: Seboterosa@unal.edu.co
+- Role: Desarrollador
