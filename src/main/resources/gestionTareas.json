@@ -1,0 +1,123 @@
+{
+  "info": {
+    "name": "gestionTareas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "bruno",
+      "event": []
+    },
+    {
+      "name": "tasks",
+      "item": [
+        {
+          "name": "getAll",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/tasks"
+          }
+        },
+        {
+          "name": "create",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "http://localhost:8080/api/tasks",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\":\"test task4\",\n  \"description\":\" task for test4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getMy",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "http://localhost:8080/api/tasks/my"
+          }
+        },
+        {
+          "name": "update",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": "http://localhost:8080/api/tasks/2",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\":\"test task2\",\n  \"description\":\" task for test2\",\n  \"userId\": \"2\",\n  \"statusId\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "delete",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "http://localhost:8080/api/tasks/2"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Token by User",
+      "event": [],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "http://localhost:8080/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"user\",\n  \"password\": \"user123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Get Token by Admin",
+      "event": [],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "http://localhost:8080/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
