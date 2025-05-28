@@ -1,0 +1,332 @@
+openapi: 3.0.4
+info:
+  title: API RESTful - NUEVO SPA
+  description: |-
+    Esta es la especificación de la API RESTful para la empresa NUEVO SPA, encargada de administrar tareas y la autenticación de usuarios.
+  version: 1.0.0
+tags:
+  - name: autenticacion
+    description: Operaciones sobre la autenticación de los usuarios.
+  - name: tarea
+    description: Operaciones sobre tareas.
+paths:
+  /auth/login:
+    post:
+      tags:
+        - autenticacion
+      summary: Genera un token para autenticar un usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequestDto"
+      responses:
+        '200':
+          description: Login exitoso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponseDto"
+        '401':
+          description: Credenciales inválidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDto"
+        default:
+          description: Ha ocurrido un error inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDto"
+  /tareas:
+    get:
+      tags:
+        - tarea
+      summary: Obtiene todas las tareas activas.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Tareas encontradas.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TareaDto"
+        '401':
+          description: Solicitud no autorizada.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDto"
+        default:
+          description: Ha ocurrido un error inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDto"
+    post:
+      tags:
+        - tarea
+      summary: Genera una nueva tarea.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaNuevaDto'
+      responses:
+        '201':
+          description: Tarea creada exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaDto'
+        '400':
+          description: Datos inválidos para crear la tarea.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Solicitud no autorizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        default:
+          description: Ha ocurrido un error inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+  /tareas/{id}:
+    get:
+      tags:
+        - tarea
+      summary: Obtiene una tarea activa según el id.
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Id de la tarea a obtener.
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Tarea encontrada.
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/TareaDto"
+        '401':
+          description: Solicitud no autorizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Tarea no encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        default:
+          description: Ha ocurrido un error inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDto"
+    put:
+      tags:
+        - tarea
+      summary: Actualiza una tarea existente según el id.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id de la tarea a actualizar.
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaNuevaDto'
+      responses:
+        '200':
+          description: Tarea actualizada exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaDto'
+        '400':
+          description: Datos inválidos para actualizar la tarea.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Solicitud no autorizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Tarea no encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        default:
+          description: Ha ocurrido un error inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+    delete:
+      tags:
+        - tarea
+      summary: Elimina una tarea según el id.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id de la tarea a eliminar.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Tarea eliminada exitosamente. (Sin contenido)
+        '401':
+          description: Solicitud no autorizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '404':
+          description: Tarea no encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        default:
+          description: Ha ocurrido un error inesperado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequestDto:
+      type: object
+      required:
+        - correo
+        - contrasena
+      properties:
+        correo:
+          type: string
+          description: Correo del usuario
+          example: usuario@correo.com
+        contrasena:
+          type: string
+          description: Contraseña del usuario
+          example: 123456
+    LoginResponseDto:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token para autentificar al usuario
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    TareaDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id de la tarea
+          example: 1
+        nombre:
+          type: string
+          description: Nombre de la tarea
+          example: "Terminar informe mensual"
+        descripcion:
+          type: string
+          description: Descripción de la tarea
+          example: "Completar y enviar el informe al jefe"
+        estadoTareaId:
+          type: integer
+          format: int64
+          description: Id del Estado de la Tarea asignado
+          example: 2
+        estadoTareaNombre:
+          type: string
+          description: Nombre del Estado de la Tarea asignado
+          example: "En Proceso"
+        usuarioId:
+          type: integer
+          format: int64
+          description: Id del Usuario asignado a la Tarea
+          example: 1
+        usuarioCorreo:
+          type: string
+          description: Correo del Usuario asignado a la Tarea
+          example: "pablo@gmail.com"
+    TareaNuevaDto:
+      type: object
+      required:
+        - nombre
+        - descripcion
+        - estadoTareaId
+        - usuarioId
+      properties:
+        nombre:
+          type: string
+          description: Nombre de la tarea
+          example: "Terminar informe mensual"
+        descripcion:
+          type: string
+          description: Descripción de la tarea
+          example: "Completar y enviar el informe al jefe"
+        estadoTareaId:
+          type: integer
+          format: int64
+          description: Id del Estado a asignar a la Tarea
+          example: 1
+        usuarioId:
+          type: integer
+          format: int64
+          description: Id del Usuario a asignar a la Tarea
+          example: 1
+    ErrorDto:
+      type: object
+      properties:
+        codigo:
+          type: string
+          description: Código para identificar el error ocurrido
+          example: "ERROR XXXXX"
+        mensaje:
+          type: string
+          description: Mensaje para describir el error ocurrido
+          example: "Ha ocurrido el siguiente error: XXXXX."
