@@ -1,72 +1,103 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# Gestión de Tareas con Spring Boot
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI y Swagger.
+Este proyecto es una API RESTful para gestionar tareas, con autenticación JWT, desarrollado como parte de una prueba técnica.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+##  Tecnologías utilizadas
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 17 para la implementación.
-- Utiliza las características de Java 17, como lambdas y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias
+- Java 17  
+- Spring Boot 3.4.x  
+- Maven  
+- Base de datos H2 (en memoria)  
+- Spring Security con JWT  
+- OpenAPI / Swagger  
+- Postman (colección para pruebas)  
 
-### Spring Boot 3.4.x:
-- Construye la aplicación utilizando Spring Boot 3.4.x (última versión disponible).
+## Requisitos para ejecutar
 
-### Base de Datos:
+- Java 17  
+- Maven  
+- IDE (IntelliJ IDEA o VS Code)  
+- Git  
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+##  Configuración del Proyecto
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+- Puerto por defecto: 9097
+- Base de datos: H2 en memoria  
+  `jdbc:h2:mem:tareasdb`
+- Usuario por defecto:
+  - Username: "admin"
+  - Password: "12345"
+- Clave secreta JWT (configurada en `application.properties`):
 
-### JWT (JSON Web Token):
+  jwt.secret=mi_clave_super_segura_para_jwt12345
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+  
+##  Clase personalizada para encriptación
+Se implementó una clase propia llamada GenerarHash.java, que permite codificar contraseñas de forma segura usando el algoritmo BCrypt.
+Esto permite encriptar manualmente contraseñas y verificar su validez, mejorando la seguridad y control del sistema.
 
-### OpenAPI y Swagger:
+## Endpoints disponibles
+# Swagger UI:
+http://localhost:9097/swagger-ui/index.html
 
-- Documenta la API utilizando OpenAPI y Swagger.
+# OpenAPI JSON:
+http://localhost:9097/v3/api-docs
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+# H2 Console (si está habilitada):
+http://localhost:9097/h2-console
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+## Colección de Postman
+Se incluye una colección de Postman con pruebas listas para:
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+- Registro de usuario
+- Login y obtención de JWT
+- Operaciones CRUD sobre tareas
+- Autorización con roles
+- Validaciones
 
-### Documentación:
-- Utiliza OpenAPI y Swagger para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+# CREAR TOKEN (LOGIN)
+POST http://localhost:9097/api/auth/login
+# CREAR TAREAS 
+POST http://localhost:9097/api/tareas
+# LISTAR TAREAS
+GET http://localhost:9097/api/tareas
+# ACTUALIZAR TAREA
+PUT http://localhost:9097/api/tareas/1
+# ELIMINAR TAREAS
+DELETE http://localhost:9097/api/tareas/1
 
-### Código Limpio:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+## ¿Cómo ejecutar el proyecto?
+1. Clona el repositorio:
+   - git clone https://github.com/juankarlitos/desafio-spring-boot.git
+2. Entra al directorio:
+   - cd desafio-spring-boot
+3. Ejecuta con Maven:
+   - ./mvnw spring-boot:run
+4. Accede a:
+   - H2 Console (si la habilitas): http://localhost:9097/h2-console
+   - Swagger: http://localhost:9097/swagger-ui/index.html
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
 
-### Documentación:
-- Incluye instrucciones claras sobre cómo ejecutar y probar la aplicación.
-- **Incluir Json de prueba en un archivo texto o mediante un proyecto postman** Nota: Si no va se restaran puntos de la evaluación
+## Probar endpoint
+Primero tienes que loguearte con el usurname ("admin") y la password que es ("12345"), el cual te dara un token y con ese token puedes autorizarte para ejecutar
+los endpoint, en los endpoint del crud debes ir a la pestaña Authorization colocar el tipo de autorizacion que es Bearer Token y despues en la caja de la derecha colocas el token un avez hecho eso
+puedes ejecutar pinchando en el boton azul (Send), y con eso te dara la respuesta en el body del cuerpo.
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+# PD: puedes ejecutar una nueva clave encriptada si asi lo deceas, en la clase GenerarHash, le das click derecho sobre la clase
+y le das run GenerarHash y en la consola te generara una clave encriptada que puedes cambair en el data.sql
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 17, Spring Boot 3.4.x, H2, JWT, OpenAPI y Swagger.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+
+## Coleccion Postman
+La colección exportada se encuentra en la ruta:
+
+postman/coleccion_postman.json
+
+Puedes importarla en Postman para probar fácilmente los endpoints de autenticación y CRUD de tareas.
+
+
+## Autor
+# Juan Carlos Inostroza
+# jc.inostrozach@gmail.com
+# Postulante a cargo Backend Java Spring Boot
+
