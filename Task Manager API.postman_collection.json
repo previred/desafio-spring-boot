@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "bd7a998a-636c-4247-994a-4278ae4ffd1c",
+		"name": "Task Manager API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11934655"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"access_token\", jsonData.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/auth/login \\\n  -d \"username=admin\" \\\n  -d \"password=1234\"\n"
+			},
+			"response": []
+		},
+		{
+			"name": "obtener tareas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				},
+				"description": "Generated from cURL: curl -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MTg1ODU3OSwiZXhwIjoxNzUxODU4NzM5fQ.OM4mf_GD6r01LjBMDw4Ysk2Cru8vDqdhWNFJQdiCtbU\" \\\nhttp://localhost:8080/tasks"
+			},
+			"response": []
+		},
+		{
+			"name": "crear tarea para admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Estudiar Spring Security\",\n    \"description\": \"Probar autenticación con JWT\",\n    \"dueDate\": \"2025-07-10\",\n    \"statusId\": 1\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/tasks \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MTg1ODU3OSwiZXhwIjoxNzUxODU4NzM5fQ.OM4mf_GD6r01LjBMDw4Ysk2Cru8vDqdhWNFJQdiCtbU\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"title\": \"Estudiar Spring Security\",\n    \"description\": \"Probar autenticación con JWT\",\n    \"dueDate\": \"2025-07-10\",\n    \"statusId\": 1\n  }'"
+			},
+			"response": []
+		},
+		{
+			"name": "crear tarea para user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Estudiar Spring Security\",\n    \"description\": \"Probar autenticación con JWT\",\n    \"dueDate\": \"2025-07-10\",\n    \"statusId\": 1,\n    \"userId\": 2\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks"
+					]
+				},
+				"description": "Generated from cURL: curl -X POST http://localhost:8080/tasks \\\n  -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MTg1ODU3OSwiZXhwIjoxNzUxODU4NzM5fQ.OM4mf_GD6r01LjBMDw4Ysk2Cru8vDqdhWNFJQdiCtbU\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"title\": \"Estudiar Spring Security\",\n    \"description\": \"Probar autenticación con JWT\",\n    \"dueDate\": \"2025-07-10\",\n    \"statusId\": 1\n  }'"
+			},
+			"response": []
+		},
+		{
+			"name": "obtener tareas con filtro",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/tasks/filter?title=spring&statusId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "spring"
+						},
+						{
+							"key": "statusId",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MTg1ODU3OSwiZXhwIjoxNzUxODU4NzM5fQ.OM4mf_GD6r01LjBMDw4Ysk2Cru8vDqdhWNFJQdiCtbU\" \\\n\"http://localhost:8080/tasks/filter?title=spring&statusId=1\"\n"
+			},
+			"response": []
+		},
+		{
+			"name": "actualizar tarea",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Actualizar tarea\",\n    \"description\": \"Cambiar descripción\",\n    \"dueDate\": \"2025-07-15\",\n    \"statusId\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/tasks/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1"
+					]
+				},
+				"description": "Generated from cURL: curl -X PUT http://localhost:8080/tasks/1 \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer <TOKEN>\" \\\n  -d '{\n    \"title\": \"Actualizar tarea\",\n    \"description\": \"Cambiar descripción\",\n    \"dueDate\": \"2025-07-15\",\n    \"statusId\": 2\n}'\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar tarea",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/tasks/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tasks",
+						"1"
+					]
+				},
+				"description": "Generated from cURL: curl -X DELETE http://localhost:8080/tasks/1 \\\n  -H \"Authorization: Bearer <TOKEN>\"\n"
+			},
+			"response": []
+		}
+	]
+}

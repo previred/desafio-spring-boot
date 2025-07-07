@@ -1,0 +1,33 @@
+spring:
+  sql:
+    init:
+      mode: always
+  application:
+    name: task-manager
+  datasource:
+    url: jdbc:h2:mem:taskdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yml
+
+
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+jwt:
+  expiration-millis: 360000
+  secret: "d86e91d5f6b849d2823a4c0c6c99a8a3d0e14951a9f7a6df403de48ffb2a79aa" # Esto lo dejaré aquí para efectos prácticos, pero nunca se debe exponer un secreto y menos subirlo a un repositorio.

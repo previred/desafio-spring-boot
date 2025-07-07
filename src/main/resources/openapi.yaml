@@ -1,0 +1,288 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+security:
+- oauth2Password: []
+paths:
+  /tasks/{id}:
+    put:
+      tags:
+      - task-controller
+      summary: Actualizar una tarea si pertenece al usuario
+      operationId: updateTask
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequest"
+        required: true
+      responses:
+        "200":
+          description: Tarea actualizada correctamente
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskDTO"
+        "404":
+          description: Tarea no encontrada o acceso denegado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskDTO"
+        "403":
+          description: Usuario no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskDTO"
+    delete:
+      tags:
+      - task-controller
+      summary: Eliminar tarea si pertenece al usuario
+      operationId: deleteTask
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Tarea eliminada correctamente
+        "403":
+          description: Usuario no autorizado
+        "404":
+          description: Tarea no encontrada
+  /tasks:
+    get:
+      tags:
+      - task-controller
+      summary: Listar tareas del usuario autenticado
+      operationId: getTasks
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: Tareas listadas correctamente
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageTaskDTO"
+    post:
+      tags:
+      - task-controller
+      summary: Crear nueva tarea para el usuario autenticado o un usuario especificado
+      operationId: createTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequest"
+        required: true
+      responses:
+        "201":
+          description: Tarea creada correctamente
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskDTO"
+        "404":
+          description: Usuario no encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskDTO"
+  /tasks/filter:
+    get:
+      tags:
+      - task-controller
+      summary: "Filtrar tareas por usuario, título, estado y fecha de vencimiento"
+      operationId: filterTasks
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: title
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: statusId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: dueBefore
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: Tareas filtradas correctamente
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageTaskDTO"
+components:
+  schemas:
+    TaskRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 255
+          minLength: 0
+        description:
+          type: string
+          maxLength: 1000
+          minLength: 0
+        dueDate:
+          type: string
+          format: date
+        statusId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+      required:
+      - dueDate
+      - statusId
+      - title
+    TaskDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        dueDate:
+          type: string
+          format: date
+        status:
+          type: string
+        username:
+          type: string
+    PageTaskDTO:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/Pageable"
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/TaskDTO"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
+    SortObject:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        empty:
+          type: boolean
+        unsorted:
+          type: boolean
+  securitySchemes:
+    oauth2Password:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: http://localhost:8080/auth/login
