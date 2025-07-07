@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "2423c844-9aae-49ad-8ed9-ffb063d899b3",
+		"name": "Desafio Tecnico Gestion Tareas con Java Spring Boot ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21559157"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9097/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9097",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NTE4NzE4NzgsImV4cCI6MTc1MTk1ODI3OH0.eI9u0X1lhGTGC_joZjh0jlzF-8et0YsO4eD6fBeVvgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"titulo\": \"pruebas con codigo 203 \",\r\n  \"descripcion\": \"codigo 500\",\r\n  \"estadoId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9097/api/tareas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9097",
+					"path": [
+						"api",
+						"tareas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NTE4NzE4NzgsImV4cCI6MTc1MTk1ODI3OH0.eI9u0X1lhGTGC_joZjh0jlzF-8et0YsO4eD6fBeVvgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9097/api/tareas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9097",
+					"path": [
+						"api",
+						"tareas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar Tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NTE4NzE4NzgsImV4cCI6MTc1MTk1ODI3OH0.eI9u0X1lhGTGC_joZjh0jlzF-8et0YsO4eD6fBeVvgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"titulo\": \"Revisando app\",\r\n  \"descripcion\": \"revisando revisando\",\r\n  \"estadoId\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9097/api/tareas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9097",
+					"path": [
+						"api",
+						"tareas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar Tareas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWRtaW4iLCJpYXQiOjE3NTE4NzE4NzgsImV4cCI6MTc1MTk1ODI3OH0.eI9u0X1lhGTGC_joZjh0jlzF-8et0YsO4eD6fBeVvgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9097/api/tareas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9097",
+					"path": [
+						"api",
+						"tareas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
