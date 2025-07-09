@@ -1,0 +1,20 @@
+CREATE TABLE ESTADO_TAREA (
+    id INT PRIMARY KEY,
+    descripcion VARCHAR(255)
+);
+
+CREATE TABLE USUARIO (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+    clave VARCHAR(255)
+);
+
+CREATE TABLE TAREA (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255),
+    descripcion VARCHAR(255),
+    usuario_id INT,
+    estado_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES USUARIO(id),
+    FOREIGN KEY (estado_id) REFERENCES ESTADO_TAREA(id)
+);

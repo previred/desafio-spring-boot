@@ -1,0 +1,67 @@
+Instrucciones de uso de API
+
+Base de datos h2
+Ingresar a http://localhost:8080/h2-console/login.jsp
+username: sa y la clave en blanco hacer click en connect y de esa manera se ingresa a la base de datos.
+
+
+Se encuentran las siguientes tablas.
+
+TAREA: Contiene 2 tareas precargadas.
+
+USUARIO:
+1- Nombre: Mariana y  Clave: 1234.
+2 Nombre:Daniel y Clave: abcd.
+3- Nombre: Alberto y Clave: 4321.
+
+ESTADO_TAREA:
+1.Pendiente.
+2. En_desarrollo.
+3. Finalizada.
+
+Para autenticación de usuario
+Ingresar a la ruta http://localhost:8080/auth/login con el método POST, y agregar en el body los datos de usuario. Ejemplo:
+
+{
+ "nombre":"Mariana",
+ "clave":"1234"
+}
+Una vez ejecutado en postman dichos parámetros generará el token, para que el usuario pueda acceder a la creación, modificación, consulta y eliminación de tareas.
+
+
+Para las acciones del (CRUD) considerar siempre tener los siguientes parámetros en cabecera
+key: Authorization.
+value: Bearer <token>.
+Nota: en value escribir primero Bearer, luego un espacio y allí se agrega el token generado desde http://localhost:8080/auth/login.
+
+Creación de tarea para crear una tarea ingresar a la siguiente url http://localhost:8080/nuevo-spa-v1/tarea utilizando el método POST, y en el body agregar:
+{
+ "titulo": "Nueva tarea",
+ "descripcion": "Descripción de tarea",
+ "usuario": {
+   "id": 1
+ },
+ "estado": {
+   "id": 1
+ }
+}
+Nota:Para crear la tarea es obligatorio indicar el id usuario y el id de la tarea.
+
+Para consultar las tareas ir a la siguiente url http://localhost:8080/nuevo-spa-v1/tareas indicar método GET y ejecutar se mostrará un listado de todas las tareas existentes.
+
+
+Para modificar una tarea ir a la siguiente url http://localhost:8080/nuevo-spa-v1/tarea/2 indicar que el método es de tipo PUT , el número luego de tarea/ , indica el id de la tarea a modificar(aquí podemos cambiar estados de la tarea, título, descripción y usuario) el cuerpo para la actualización de la tarea es el siguiente
+{
+   "titulo": "Nueva tarea se modificó",
+   "descripcion": "descripcion nueva",
+   "usuario": {
+       "id": 2
+   },
+   "estado": {
+       "id": 2
+   }
+}
+Para eliminar una tarea se usa método DELETE  agregar la siguiente url http://localhost:8080/nuevo-spa-v1/tarea/4 el número luego de tarea/ representa el id de la tarea que será eliminada y luego ejecutar aparecerá un mensaje de que la Tarea fue eliminada exitosamente.
+
+Saludos Milagros León
+Cargo al que postulo: Desarrollador Java.
