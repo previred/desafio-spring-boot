@@ -1,0 +1,89 @@
+1-Decargar el proyecto
+2-Levantar proyecto (usando tu IDE favorito)
+3-Para ver la bd H2 por consola
+ URL: http://localhost:8081/h2-console/
+4-Para ver documentación y pruebas Swagger
+ URL: http://localhost:8081/swagger-ui/index.html
+
+*Para poder obtener token
+ URL: http://localhost:8081/swagger-ui/index.html#/auth-controller/login
+(este es un caso de prueba ya viene insertado en la creacion de h2)
+{
+  "username": "admin",
+  "password": "prueba"
+}
+
+********************************************************************
+
+*Para poder crear una tarea
+ URL: http://localhost:8081/swagger-ui/index.html#/tarea-controller/crear
+# Request 1
+{
+  "titulo": "Prueba 1",
+  "descripcion": "Prueba 1",
+  "estadoId": 1
+}
+# Request 2
+{
+  "titulo": "Prueba 2",
+  "descripcion": "Prueba 2",
+  "estadoId": 2
+}
+# Request 3
+{
+  "titulo": "Prueba 3",
+  "descripcion": "Prueba 3",
+  "estadoId": 3
+}
+# Request 4
+{
+  "titulo": "Prueba 4",
+  "descripcion": "Prueba 4",
+  "estadoId": 3
+}
+# Request 5
+{
+  "titulo": "Prueba 5",
+  "descripcion": "Prueba 5",
+  "estadoId": 1
+}
+# Request 6
+{
+  "titulo": "Prueba 6",
+  "descripcion": "Prueba 6",
+  "estadoId": 2
+}
+
+********************************************************************
+
+*Para listar tareas
+ URL: http://localhost:8081/swagger-ui/index.html#/tarea-controller/listar
+
+********************************************************************
+
+*Para eliminar tarea
+ URL: http://localhost:8081/swagger-ui/index.html#/tarea-controller/eliminar
+ (pasar {id} el numero 2)
+
+********************************************************************
+
+*Para poder modificar una tarea
+ URL: http://localhost:8081/swagger-ui/index.html#/tarea-controller/actualizar
+ (pasar {id} el numero 5)
+# Request
+{
+  "titulo": "Prueba 10",
+  "descripcion": "Prueba 10",
+  "estadoId": 3
+}
+
+********************************************************************
+
+*Para obtener una tarea en particular
+ URL: http://localhost:8081/swagger-ui/index.html#/tarea-controller/obtener
+ (pasar {id} el numero 5)
+
+
+Nombre: Jonnathan Toro Jara
+Correo: jonnathan.toro@live.com
+Cargo al que postulo: Desarrollador Backend Java -Hf solutions

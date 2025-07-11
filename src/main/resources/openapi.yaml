@@ -1,0 +1,76 @@
+openapi: 3.0.1
+info:
+  title: API Gestión de Tareas
+  version: 1.0.0
+  description: API para gestionar usuarios y tareas de la empresa NUEVO SPA.
+paths:
+  /auth/login:
+    post:
+      summary: Autenticar usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: JWT Token generado
+        '401':
+          description: Credenciales inválidas
+  /tareas:
+    get:
+      summary: Listar tareas
+      responses:
+        '200':
+          description: Lista de tareas
+    post:
+      summary: Crear tarea
+      responses:
+        '201':
+          description: Tarea creada
+  /tareas/{id}:
+    get:
+      summary: Obtener tarea por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tarea encontrada
+        '404':
+          description: No encontrada
+    put:
+      summary: Actualizar tarea
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tarea actualizada
+    delete:
+      summary: Eliminar tarea
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea eliminada
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
