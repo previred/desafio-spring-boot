@@ -1,0 +1,189 @@
+
+openapi: 3.0.3
+info:
+  title: API de Tareas
+  version: 1.0.0
+  description: >
+    Definición OpenAPI para el recurso **Tareas**
+servers:
+  - url: /api/v1
+    description: Endpoint base
+
+tags:
+  - name: Tareas
+    description: Operaciones sobre el recurso Tareas
+
+components:
+  schemas:
+    Tarea:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identificador único de la tarea
+        nombre:
+          type: string
+          description: Título o nombre de la tarea
+        descripcion:
+          type: string
+          description: Detalle descriptivo de la tarea
+        usuario:
+          type: string
+          description: Identificador del usuario asignado
+        estado_tarea:
+          type: string
+          description: Identificador del estado de la tarea
+        creado:
+          type: string
+          format: date-time
+          description: Fecha y hora en que se creó la tarea
+        modificado:
+          type: string
+          format: date-time
+          description: Fecha y hora de la última modificación
+      required:
+        - id
+        - nombre
+        - id_usuario
+        - id_estado_tarea
+      example:
+        id: 123
+        nombre: "Revisar informe mensual"
+        descripcion: "Verificar métricas y preparar presentación"
+        id_usuario: 45
+        id_estado_tarea: 2
+        creado: "2025-07-09T12:34:56Z"
+        modificado: "2025-07-09T13:00:00Z"
+
+    NuevaTarea:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: Título o nombre de la tarea
+        descripcion:
+          type: string
+          description: Detalle descriptivo de la tarea
+        id_usuario:
+          type: integer
+          description: Identificador del usuario asignado
+        id_estado_tarea:
+          type: integer
+          description: Identificador del estado de la tarea
+      required:
+        - nombre
+        - id_usuario
+        - id_estado_tarea
+
+    ActualizaTarea:
+      allOf:
+        - $ref: '#/components/schemas/NuevaTarea'
+
+  responses:
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              mensaje:
+                type: string
+                example: "Tarea con id 123 no encontrada"
+
+paths:
+
+  /api/v1/tasks:
+    get:
+      tags:
+        - Tareas
+      summary: Listar todas las tareas
+      description: Devuelve un arreglo con todas las tareas existentes.
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tarea'
+
+    post:
+      tags:
+        - Tareas
+      summary: Crear una nueva tarea
+      description: Crea una tarea con los datos proporcionados.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaTarea'
+      responses:
+        '201':
+          description: Tarea creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarea'
+        '400':
+          description: Petición inválida. Datos faltantes o en formato incorrecto.
+
+  /api/v1/tasks/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Identificador de la tarea
+
+    get:
+      tags:
+        - Tareas
+      summary: Obtener una tarea por ID
+      description: Devuelve una tarea específica.
+      responses:
+        '200':
+          description: Detalle de la tarea
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarea'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Tareas
+      summary: Actualizar una tarea existente
+      description: Actualiza los campos de una tarea.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActualizaTarea'
+      responses:
+        '200':
+          description: Tarea actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarea'
+        '400':
+          description: Petición inválida
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - Tareas
+      summary: Eliminar una tarea
+      description: Borra la tarea indicada.
+      responses:
+        '204':
+          description: Tarea eliminada correctamente (sin contenido)
+        '404':
+          $ref: '#/components/responses/NotFound'

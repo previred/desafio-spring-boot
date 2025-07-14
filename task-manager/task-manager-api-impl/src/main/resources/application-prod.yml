@@ -1,0 +1,34 @@
+config:
+    jwtExpiration: 86400000
+    secretKeyJWT: WTQkW3hZc2lnc1Rva2VuRm9ySldUSE1TMTIzNDU2Nzg5MA==
+    regex:
+        email: "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Za-z]{2,}$"
+        password: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+spring:
+    config:
+        activate:
+            on-profile: prod
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/managementtask_dev_db
+        username: usr_previred
+        password: admin123
+        hikari:
+            auto-commit: true
+            minimum-idle: 5
+            maximum-pool-size: 10
+            idle-timeout: 30000
+            max-lifetime: 1800000
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: none
+        show-sql: false
+    flyway:
+        enabled: true
+        locations: classpath:db/migration/prod
+logging:
+    level:
+        root: INFO
+        org.springframework: INFO
+        com.example.registration: INFO

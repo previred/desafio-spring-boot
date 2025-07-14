@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.previred.api</groupId>
+    <artifactId>task-manager-api-spec</artifactId>
+    <version>1.0.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Task Manager API specification</description>
+
+    <parent>
+        <groupId>com.previred.api</groupId>
+        <artifactId>task-manager</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <properties>
+        <openapi-generator.version>6.6.0</openapi-generator.version>
+        <openapi.package.api>com.previred.api.spec.controller</openapi.package.api>
+        <openapi.package.model>com.previred.api.spec.dto</openapi.package.model>
+
+        <swagger.annotations.version>2.2.14</swagger.annotations.version>
+        <jackson-nullable.version>0.2.6</jackson-nullable.version>
+
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger.annotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-nullable.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-api-code</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <generatorName>spring</generatorName>
+                            <strictSpec>true</strictSpec>
+                            <generateApiTests>false</generateApiTests>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateModelTests>false</generateModelTests>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <configOptions>
+                                <controllerThrowsExceptions>java.io.IOException,com.example.NotFoundException</controllerThrowsExceptions>
+                                <interfaceOnly>true</interfaceOnly>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <useBeanValidation>true</useBeanValidation>
+                                <useClassLevelBeanValidation>false</useClassLevelBeanValidation>
+                                <useTags>true</useTags>
+                                <java17>true</java17>
+                                <useOptional>false</useOptional>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                <dateLibrary>java17</dateLibrary>
+                                <bigDecimalAsString>true</bigDecimalAsString>
+                                <useBeanValidation>true</useBeanValidation>
+                                <apiPackage>${openapi.package.api}</apiPackage>
+                                <modelPackage>${openapi.package.model}</modelPackage>
+                            </configOptions>
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
