@@ -1,0 +1,466 @@
+{
+	"info": {
+		"_postman_id": "c6e8eda9-d93c-4f6a-a20a-54d1d6b420cf",
+		"name": "API_Management_Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11252928"
+	},
+	"item": [
+		{
+			"name": "registerUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin1234\",\n    \"password\": \"admin1234\",\n    \"role\": \"ROLE_ADMIN\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/auth/register' \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"username\": \"testuser\",\n    \"password\": \"Password123!\",\n    \"email\": \"test@example.com\",\n    \"role\": \"ROLE_USER\"\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "loginUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin123\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/auth/login' \\\r\n--header 'Content-Type: application/json' \\\r\n--data '{\r\n    \"username\": \"testuser\",\r\n    \"password\": \"Password123!\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "getAllUsers",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ1ODMyMSwiZXhwIjoxNzUyNDYxOTIxfQ.g1WTtERe7SbXN0RtXHuxbvkOZiAxwg7mZ7OaqrfrnkU"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/users' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE'"
+			},
+			"response": []
+		},
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer YOUR_JWT_TOKEN_HERE"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"anotheruser\",\r\n    \"password\": \"SecurePassword!\",\r\n    \"role\": \"ROLE_USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/users' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE' \\\r\n--data '{\r\n    \"username\": \"anotheruser\",\r\n    \"password\": \"SecurePassword!\",\r\n    \"role\": \"ROLE_USER\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "getUserById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ0NzAwNiwiZXhwIjoxNzUyNDUwNjA2fQ.iHXkb28niSEw6rijvvtIB6QGh66R1FZSTr14mHX_tJs"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"1"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/users/1' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE'"
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer YOUR_JWT_TOKEN_HERE"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"updatedUser\",\r\n    \"password\": \"NewSecurePassword!\",\r\n    \"role\": \"ROLE_USER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"2"
+					]
+				},
+				"description": "Generated from cURL: curl --location --request PUT 'http://localhost:8080/api/v1/users/2' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE' \\\r\n--data '{\r\n    \"username\": \"updatedUser\",\r\n    \"password\": \"NewSecurePassword!\",\r\n    \"role\": \"ROLE_USER\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUser",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YOUR_JWT_TOKEN_HERE"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"3"
+					]
+				},
+				"description": "Generated from cURL: curl --location --request DELETE 'http://localhost:8080/api/v1/users/3' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE'"
+			},
+			"response": []
+		},
+		{
+			"name": "getAllTasks",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ1ODMyMSwiZXhwIjoxNzUyNDYxOTIxfQ.g1WTtERe7SbXN0RtXHuxbvkOZiAxwg7mZ7OaqrfrnkU"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/tasks' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE'"
+			},
+			"response": []
+		},
+		{
+			"name": "getTaskById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ1ODMyMSwiZXhwIjoxNzUyNDYxOTIxfQ.g1WTtERe7SbXN0RtXHuxbvkOZiAxwg7mZ7OaqrfrnkU"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"5"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/tasks/1' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE'"
+			},
+			"response": []
+		},
+		{
+			"name": "createTask",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ1ODMyMSwiZXhwIjoxNzUyNDYxOTIxfQ.g1WTtERe7SbXN0RtXHuxbvkOZiAxwg7mZ7OaqrfrnkU"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Test\",\r\n    \"description\": \"Implement the frontend and backend for user login.\",\r\n    \"statusId\": 1,\r\n    \"userId\": 2,\r\n    \"dueDate\": \"2025-07-31\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/tasks' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE' \\\r\n--data '{\r\n    \"title\": \"Develop login page\",\r\n    \"description\": \"Implement the frontend and backend for user login.\",\r\n    \"statusId\": 1,\r\n    \"assignedToId\": 2,\r\n    \"dueDate\": \"2025-07-31\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "updateTask",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ1ODMyMSwiZXhwIjoxNzUyNDYxOTIxfQ.g1WTtERe7SbXN0RtXHuxbvkOZiAxwg7mZ7OaqrfrnkU"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Tesssst\",\r\n    \"description\": \"Improve code quality for login and registration.\",\r\n    \"statusId\": 2,\r\n    \"userId\": 1,\r\n    \"dueDate\": \"2025-08-15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"5"
+					]
+				},
+				"description": "Generated from cURL: curl --location --request PUT 'http://localhost:8080/api/v1/tasks/1' \\\r\n--header 'Content-Type: application/json' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE' \\\r\n--data '{\r\n    \"title\": \"Refactor login logic\",\r\n    \"description\": \"Improve code quality for login and registration.\",\r\n    \"statusId\": 2,\r\n    \"assignedToId\": 1,\r\n    \"dueDate\": \"2025-08-15\"\r\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteTask",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ1ODMyMSwiZXhwIjoxNzUyNDYxOTIxfQ.g1WTtERe7SbXN0RtXHuxbvkOZiAxwg7mZ7OaqrfrnkU"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"5"
+					]
+				},
+				"description": "Generated from cURL: curl --location --request DELETE 'http://localhost:8080/api/v1/tasks/2' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE'"
+			},
+			"response": []
+		},
+		{
+			"name": "getTasksByUserId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImlhdCI6MTc1MjQ0NzAwNiwiZXhwIjoxNzUyNDUwNjA2fQ.iHXkb28niSEw6rijvvtIB6QGh66R1FZSTr14mHX_tJs"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/tasks/user/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"user",
+						"2"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'http://localhost:8080/api/v1/tasks/user/1' \\\r\n--header 'Authorization: Bearer YOUR_JWT_TOKEN_HERE'"
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: task-management-api
+  server:
+    port: 8080
+  datasource:
+    url: jdbc:h2:mem:tasksdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update # 'update' para que JPA cree/actualice las tablas. Puedes usar 'create' para recrear la DB cada vez.
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# Logger
+logging:
+  level:
+    root: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+
+# Configuration JWT
+jwt:
+  secret: Bc934mFqp7fsl389fsaLkQo82Kjf932kjfLAKs9fJASDkqfjsadfoqw99asdkASs
+  expiration: 3600000
+
+# Configuration SpringDoc OpenAPI (Swagger)
+# Default url: http://localhost:8080/swagger-ui/index.html
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    disable-swagger-default-url: true
+    display-request-duration: true
