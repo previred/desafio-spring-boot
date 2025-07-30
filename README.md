@@ -1,72 +1,126 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# 🚀 API - Nuevo SPA
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI y Swagger.
+## 📌 Configuración del Proyecto
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+- **Nombre de la aplicación:** `api-nuevo-spa`  
+- **Puerto:** `8060`  
+- **Expiración de token JWT:** `7200000 ms` (2 horas)  
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 17 para la implementación.
-- Utiliza las características de Java 17, como lambdas y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias
+---
 
-### Spring Boot 3.4.x:
-- Construye la aplicación utilizando Spring Boot 3.4.x (última versión disponible).
+## 🔑 Autenticación
 
-### Base de Datos:
+### **Login**
+**POST:**  
+```
+http://localhost:8060/api/login
+```
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+**Body:**  
+```json
+{
+  "username": "estebanjpc",
+  "password": "12345"
+}
+```
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+---
 
-### JWT (JSON Web Token):
+## 📋 Endpoints
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+### **Listar Tareas**
+**GET:**  
+```
+http://localhost:8060/tareas
+```
+**Headers:**  
+```
+Authorization: Bearer <token>
+```
 
-### OpenAPI y Swagger:
+---
 
-- Documenta la API utilizando OpenAPI y Swagger.
+### **Crear Tarea**
+**POST:**  
+```
+http://localhost:8060/tarea
+```
+**Headers:**  
+```
+Authorization: Bearer <token>
+```
+**Body:**  
+```json
+{
+  "nombre": "Tarea 1",
+  "usuario": {
+    "id": 1
+  },
+  "estadoTarea": {
+    "id": 1
+  }
+}
+```
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+---
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+### **Actualizar Tarea**
+**PUT:**  
+```
+http://localhost:8060/tarea/{id}
+```
+**Headers:**  
+```
+Authorization: Bearer <token>
+```
+**Body:**  
+```json
+{
+  "id": 5,
+  "nombre": "Tarea 11",
+  "usuario": {
+    "id": 1
+  },
+  "estadoTarea": {
+    "id": 0
+  }
+}
+```
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+---
 
-### Documentación:
-- Utiliza OpenAPI y Swagger para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+### **Eliminar Tarea**
+**DELETE:**  
+```
+http://localhost:8060/tarea/{id}
+```
+**Headers:**  
+```
+Authorization: Bearer <token>
+```
 
-### Código Limpio:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
+---
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+## 👤 Usuarios de Prueba
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
+- **Usuario:** `estebanjpc` / **Contraseña:** `12345`  
+- **Usuario:** `admin` / **Contraseña:** `12345`  
 
-### Documentación:
-- Incluye instrucciones claras sobre cómo ejecutar y probar la aplicación.
-- **Incluir Json de prueba en un archivo texto o mediante un proyecto postman** Nota: Si no va se restaran puntos de la evaluación
+---
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+## 📖 Documentación
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 17, Spring Boot 3.4.x, H2, JWT, OpenAPI y Swagger.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+- Swagger UI: [http://localhost:8060/swagger-ui/index.html](http://localhost:8060/swagger-ui/index.html)  
+- OpenAPI Docs: [http://localhost:8060/v3/api-docs](http://localhost:8060/v3/api-docs)  
+
+---
+
+## 📦 Recursos Adicionales
+
+- Se adjunta colección de **POSTMAN**: `previred_collection.json`  
+
+---
+
+## 💼 Postulación
+
+Postulo al **Cargo de Desarrollador Backend**

@@ -1,0 +1,12 @@
+README.md
+pom.xml
+src/main/java/com/app/api/ApiUtil.java
+src/main/java/com/app/api/AutenticacinApi.java
+src/main/java/com/app/api/TareasApi.java
+src/main/java/com/app/model/ErrorResponse.java
+src/main/java/com/app/model/EstadoTareaRef.java
+src/main/java/com/app/model/LoginRequest.java
+src/main/java/com/app/model/LoginResponse.java
+src/main/java/com/app/model/Response.java
+src/main/java/com/app/model/Tarea.java
+src/main/java/com/app/model/UsuarioRef.java
