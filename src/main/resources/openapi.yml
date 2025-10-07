@@ -1,0 +1,268 @@
+openapi: 3.0.3
+info:
+  title: Gestión de Tareas API
+  version: 1.0.0
+  description: >
+    API para la gestión de usuarios, tareas y autenticación JWT.  
+    Incluye endpoints para CRUD de tareas, login de usuario y obtención de estados.
+
+servers:
+  - url: http://localhost:8080
+    description: Servidor local
+
+tags:
+  - name: Auth
+    description: Endpoints de autenticación
+  - name: Tasks
+    description: Operaciones CRUD de tareas
+  - name: Users
+    description: Gestión de usuarios
+  - name: Statuses
+    description: Estados predefinidos de tareas
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Autentica un usuario y retorna un JWT
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: JWT generado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Credenciales inválidas
+
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Lista todas las tareas
+      operationId: listTasks
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+    post:
+      tags:
+        - Tasks
+      summary: Crea una nueva tarea
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreateRequest'
+      responses:
+        '201':
+          description: Tarea creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+
+  /tasks/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: Obtiene una tarea por ID
+      operationId: getTaskById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tarea encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Tarea no encontrada
+    put:
+      tags:
+        - Tasks
+      summary: Actualiza una tarea existente
+      operationId: updateTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdateRequest'
+      responses:
+        '200':
+          description: Tarea actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '404':
+          description: Tarea no encontrada
+    delete:
+      tags:
+        - Tasks
+      summary: Elimina una tarea por ID
+      operationId: deleteTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Eliminada exitosamente
+        '404':
+          description: Tarea no encontrada
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Lista todos los usuarios
+      operationId: listUsers
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /statuses:
+    get:
+      tags:
+        - Statuses
+      summary: Lista estados predefinidos
+      operationId: listStatuses
+      responses:
+        '200':
+          description: Lista de estados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token JWT
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        statusId:
+          type: integer
+          format: int64
+        assignedUserId:
+          type: integer
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TaskCreateRequest:
+      type: object
+      required:
+        - title
+        - statusId
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        statusId:
+          type: integer
+          format: int64
+        assignedUserId:
+          type: integer
+          format: int64
+
+    TaskUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        statusId:
+          type: integer
+          format: int64
+        assignedUserId:
+          type: integer
+          format: int64
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        fullName:
+          type: string
+
+    Status:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
