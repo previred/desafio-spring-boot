@@ -1,0 +1,16 @@
+Nombre: Bernardo Cornejo López
+Correo: bernar2@gmail.com
+Cargo al que postulo: Desarrollador Backend hfsolutions
+
+Descripción:
+- Implementación de la API RESTful para gestión de tareas.
+- Funcionalidades: CRUD de tareas, autenticación JWT, documentación Swagger/OpenAPI.
+- Base de datos H2 con datos pre cargados.
+- Código limpio y aplicando principios SOLID.
+- Se incluyen pruebas unitarias y Postman collection para testeo.
+
+Instrucciones para ejecutar:
+1. Clonar este repositorio.
+2. Ejecutar "mvn clean spring-boot:run".
+3. Acceder a Swagger UI: "http://localhost:8080/swagger-ui.html"
+4. Base H2 accesible en "http://localhost:8080/h2-console" (sa/sin pwd)

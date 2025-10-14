@@ -1,0 +1,272 @@
+openapi: 3.0.3
+info:
+  title: API de Gestión de Tareas
+  description: API para la gestión de tareas y usuarios en NUEVO SPA.
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:8080
+    description: Servidor local
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: Autenticación
+    description: Operaciones relacionadas con la autenticación de usuarios.
+  - name: Tareas
+    description: Operaciones para la gestión de tareas.
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Autenticación
+      summary: Autenticación de usuario
+      description: Genera un token JWT para acceder a la API
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+      responses:
+        "200":
+          description: Token JWT generado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwtResponseDto'
+        "401":
+          description: Credenciales inválidas
+  /tareas:
+    post:
+      tags:
+        - Tareas
+      summary: Crear una nueva tarea
+      description: Crea una nueva tarea.
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaRequestDto'
+      responses:
+        '201':
+          description: Tarea creada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateAppDto'
+        '400':
+          description: Datos de la tarea inválidos
+    get:
+      tags:
+        - Tareas
+      summary: Obtener tareas por usuario
+      description: Obtiene la lista de tareas asociadas a un usuario.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: usuarioId
+          in: query
+          description: ID del usuario para obtener sus tareas.
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Lista de tareas obtenidas con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TareaDto'
+        '400':
+          description: Parámetros incorrectos
+        '404':
+          description: No se encontraron tareas para el usuario especificado
+  /tareas/{id}:
+    get:
+      tags:
+        - Tareas
+      summary: Obtener una tarea por ID
+      description: Obtiene los detalles de una tarea específica.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la tarea a obtener.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tarea obtenida con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TareaDto'
+        '404':
+          description: Tarea no encontrada
+    put:
+      tags:
+        - Tareas
+      summary: Actualizar una tarea existente
+      description: Actualiza los detalles de una tarea específica.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la tarea a actualizar.
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaRequestDto'
+      responses:
+        '200':
+          description: Tarea actualizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateAppDto'
+        '400':
+          description: Datos inválidos para la tarea
+        '404':
+          description: Tarea no encontrada
+    delete:
+      tags:
+        - Tareas
+      summary: Eliminar una tarea
+      description: Elimina una tarea específica.
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la tarea a eliminar.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tarea actualizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateAppDto'
+        '204':
+          description: Tarea eliminada con éxito
+        '404':
+          description: Tarea no encontrada
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequestDto:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: "Nombre de usuario para la autenticación."
+          example: "ana.gomez"
+        password:
+          type: string
+          description: "Contraseña del usuario."
+          example: "password456"
+    JwtResponseDto:
+      type: object
+      properties:
+        token:
+          type: string
+          description: "Token JWT generado tras una autenticación exitosa."
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdWFuLnBlcmV6IiwiaWF0IjoxNjkxMDM5MjAwfQ.4KbY8YyB6pe-W8OQOTvBLbbA6GbqmvDWYkwJMSgXAFc"
+    StateAppDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "Mensaje de respuesta de la aplicación."
+          example: "Operación realizada con éxito"
+        loggedUser:
+          type: string
+          description: "Nombre de usuario que realizó la operación."
+          example: "juan.perez"
+    TareaDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Identificador único de la tarea."
+          example: 1001
+        descripcion:
+          type: string
+          description: "Descripción detallada de la tarea."
+          example: "Revisar y aprobar el informe mensual."
+        dateCreation:
+          type: string
+          format: date-time
+          description: "Fecha y hora en que la tarea fue creada (formato ISO 8601)."
+          example: "2025-03-29T08:30:00Z"
+        expirationDate:
+          type: string
+          format: date-time
+          description: "Fecha y hora de vencimiento de la tarea (formato ISO 8601)."
+          example: "2025-04-05T18:00:00Z"
+        state:
+          type: string
+          description: "Estado actual de la tarea."
+          example: "En Progreso"
+        userName:
+          type: string
+          description: "Nombre del usuario asignado a la tarea."
+          example: "juan.perez"
+        userRole:
+          type: string
+          description: "Rol del usuario asignado a la tarea."
+          example: "ADMIN"
+    TareaRequestDto:
+      type: object
+      required:
+        - descripcion
+        - expirationDate
+        - state
+      properties:
+        descripcion:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: "Descripción de la tarea, no puede ser nula ni vacía (mínimo 1 carácter, máximo 255)."
+          example: "Terminar la documentación del proyecto."
+        expirationDate:
+          type: string
+          format: date-time
+          description: "Fecha de vencimiento en formato ISO 8601."
+          example: "2025-04-01T12:00:00Z"
+        state:
+          type: integer
+          format: int64
+          enum: [ 1, 2, 3 ]
+          description: "Estado de la tarea: 1 = Pendiente, 2 = En Progreso, 3 = Completada."
+          example: 2
