@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { authService, taskService, taskStateService } from '../services/api';
+import { authService, taskService, taskStateService, userService } from '../services/api';
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
 
 export default function TaskDashboard({ onLogout }) {
   const [tasks, setTasks] = useState([]);
   const [taskStates, setTaskStates] = useState([]);
+  const [users, setUsers] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ export default function TaskDashboard({ onLogout }) {
 
   useEffect(() => {
     loadTaskStates();
+    loadUsers();
     loadTasks();
   }, [filter]);
 
@@ -27,6 +29,16 @@ export default function TaskDashboard({ onLogout }) {
       console.error('Error loading task states:', err);
       setTaskStates([]);
       setError('Error al cargar estados de tarea');
+    }
+  };
+
+  const loadUsers = async () => {
+    try {
+      const usersList = await userService.getUsers();
+      setUsers(Array.isArray(usersList) ? usersList : []);
+    } catch (err) {
+      console.error('Error loading users:', err);
+      setUsers([]);
     }
   };
 
@@ -138,6 +150,7 @@ export default function TaskDashboard({ onLogout }) {
         <TaskForm
           task={selectedTask}
           taskStates={taskStates}
+          users={users}
           onSave={handleSaveTask}
           onCancel={handleCancelForm}
         />

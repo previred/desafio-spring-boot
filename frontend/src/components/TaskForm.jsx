@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function TaskForm({ task, taskStates, onSave, onCancel }) {
+export default function TaskForm({ task, taskStates, users = [], onSave, onCancel }) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -104,6 +104,24 @@ export default function TaskForm({ task, taskStates, onSave, onCancel }) {
               {taskStates.map((state) => (
                 <option key={state.id} value={state.id}>
                   {state.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="assignedUserId">Asignar a usuario</label>
+            <select
+              id="assignedUserId"
+              name="assignedUserId"
+              value={formData.assignedUserId || ''}
+              onChange={handleChange}
+              disabled={loading}
+            >
+              <option value="">Sin asignar</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.fullName} ({user.username})
                 </option>
               ))}
             </select>

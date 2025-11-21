@@ -54,6 +54,13 @@ export default function TaskList({ tasks, taskStates, loading, onEdit, onDelete 
         <tbody>
           {tasks.map((task) => {
             const stateName = getStateName(task.state?.id);
+            console.log('Task data:', {
+              id: task.id,
+              title: task.title,
+              assignedUser: task.assignedUser,
+              createdBy: task.createdBy,
+              createdAt: task.createdAt
+            });
             return (
               <tr key={task.id}>
                 <td className="task-title">{task.title}</td>

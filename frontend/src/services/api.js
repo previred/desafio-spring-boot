@@ -114,3 +114,14 @@ export const taskStateService = {
     return handleResponse(response);
   }
 };
+
+export const userService = {
+  async getUsers() {
+    const response = await fetch(`${API_URL}/users`, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    });
+    return handleResponse(response);
+  }
+};

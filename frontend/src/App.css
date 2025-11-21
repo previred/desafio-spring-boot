@@ -284,6 +284,7 @@ html, body {
 .task-table td {
   padding: 1rem;
   border-bottom: 1px solid #dee2e6;
+  color: #333;
 }
 
 .task-table tbody tr:hover {
