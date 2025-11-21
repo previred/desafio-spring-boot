@@ -1,0 +1,15 @@
+meta {
+  name: Get All Task States
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/task-states
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
