@@ -69,3 +69,67 @@ Se evaluará la solución en función de los siguientes criterios:
 - Uso adecuado de Java 21, Spring Boot 3.5.x, H2, JWT, OpenAPI.
 - Claridad y completitud de la documentación.
 - **Puntos extras si la generación de la API se realizo mediante API First**
+
+---
+
+# Guía de Ejecución
+
+## Requisitos Previos
+- Java 21
+- Maven 3.6+
+
+## Levantar el Proyecto
+
+```bash
+# 1. Clonar el repositorio
+git clone <url-repo>
+cd desafio-spring-boot
+
+# 2. Compilar y ejecutar tests
+./mvnw clean test
+
+# 3. Ejecutar la aplicación
+./mvnw spring-boot:run
+```
+
+La aplicación estará disponible en `http://localhost:8080`
+
+## Endpoints Principales
+
+### Autenticación
+- `POST /api/v1/auth/register` - Registrar usuario
+- `POST /api/v1/auth/login` - Login y obtener JWT
+
+### Tareas (requiere autenticación)
+- `GET /api/v1/tasks` - Listar tareas
+- `POST /api/v1/tasks` - Crear tarea
+- `GET /api/v1/tasks/{id}` - Obtener tarea
+- `PUT /api/v1/tasks/{id}` - Actualizar tarea
+- `DELETE /api/v1/tasks/{id}` - Eliminar tarea
+
+### Estados
+- `GET /api/v1/task-states` - Listar estados disponibles
+
+## Documentación API
+
+Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+
+## Tecnologías Implementadas
+
+- ✅ **Java 21** (Records, Pattern Matching, etc.)
+- ✅ **Spring Boot 3.4.1** con SecurityFilterChain moderno
+- ✅ **JWT** con jjwt 0.12.6
+- ✅ **H2 Database** con datos pre-cargados
+- ✅ **MapStruct 1.6.3** para DTOs
+- ✅ **OpenAPI Generator** (Contract-First)
+- ✅ **23 Tests** con JUnit 5 y Mockito
+- ✅ **Bruno Collection** para testing de API
+
+## Arquitectura
+
+```
+3 Capas: Controller → Service → Repository
+DTOs con MapStruct
+Security con JWT Filter
+OpenAPI Spec → Código Generado
+```
