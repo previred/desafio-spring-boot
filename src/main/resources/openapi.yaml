@@ -1,8 +1,23 @@
 openapi: 3.0.3
 info:
   title: Task Management API
-  description: RESTful API for task management with JWT authentication
-  version: 1.0.0
+  description: |
+    RESTful API for task management with JWT authentication.
+
+    ## Features
+    - User registration and authentication with JWT tokens
+    - Create, read, update, and delete tasks
+    - Assign tasks to different users
+    - Filter tasks by state
+    - Task states management
+    - User listing for task assignment
+
+    ## Recent Updates (v1.1.0)
+    - Added user assignment functionality
+    - New endpoint: GET /api/v1/users to list all users
+    - Enhanced TaskRequest to support assignedUserId field
+    - Updated TaskResponse to include assignedUser and createdBy fields
+  version: 1.1.0
   contact:
     name: NUEVO SPA
     email: tech@nuevospa.com
@@ -18,6 +33,8 @@ tags:
     description: Task management operations
   - name: Task States
     description: Task state catalog
+  - name: Users
+    description: User management operations
 
 paths:
   /api/v1/auth/register:
@@ -231,6 +248,27 @@ paths:
         '401':
           description: Unauthorized
 
+  /api/v1/users:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      description: Returns a list of all registered users in the system
+      operationId: getAllUsers
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized
+
 components:
   securitySchemes:
     bearerAuth:
@@ -285,15 +323,23 @@ components:
           type: string
           minLength: 3
           maxLength: 200
+          description: Task title
         description:
           type: string
           maxLength: 2000
+          description: Task description (optional)
         stateId:
           type: integer
           format: int64
+          description: ID of the task state
         assignedUserId:
           type: integer
           format: int64
+          description: ID of the user to assign the task to (optional, defaults to creator)
+        dueDate:
+          type: string
+          format: date-time
+          description: Task due date (optional)
 
     UserResponse:
       type: object
@@ -341,8 +387,14 @@ components:
           $ref: '#/components/schemas/TaskStateResponse'
         assignedUser:
           $ref: '#/components/schemas/UserResponse'
+          description: User to whom the task is assigned
         createdBy:
           $ref: '#/components/schemas/UserResponse'
+          description: User who created the task
+        dueDate:
+          type: string
+          format: date-time
+          description: Task due date (optional)
         createdAt:
           type: string
           format: date-time
