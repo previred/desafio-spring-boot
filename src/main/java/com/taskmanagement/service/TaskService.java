@@ -38,8 +38,11 @@ public class TaskService {
     }
 
     public TaskResponse createTask(CreateTaskRequest request, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        // Use assignedUserId if provided, otherwise use the creator's userId
+        Long targetUserId = request.assignedUserId() != null ? request.assignedUserId() : userId;
+
+        User user = userRepository.findById(targetUserId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + targetUserId));
 
         TaskState state = taskStateRepository.findById(request.stateId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task state not found"));

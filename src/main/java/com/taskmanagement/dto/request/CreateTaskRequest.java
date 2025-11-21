@@ -20,5 +20,8 @@ public record CreateTaskRequest(
     Long stateId,
 
     @JsonProperty("dueDate")
-    LocalDateTime dueDate
+    LocalDateTime dueDate,
+
+    @JsonProperty("assignedUserId")
+    Long assignedUserId
 ) {}

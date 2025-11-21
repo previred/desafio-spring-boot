@@ -10,7 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {TaskStateMapper.class}, builder = @Builder(disableBuilder = true))
+@Mapper(componentModel = "spring", uses = {TaskStateMapper.class, UserMapper.class}, builder = @Builder(disableBuilder = true))
 public interface TaskMapper {
 
     @Mapping(target = "id", ignore = true)
@@ -23,7 +23,8 @@ public interface TaskMapper {
     @Mapping(target = "dueDate", source = "request.dueDate")
     Task toEntity(CreateTaskRequest request, User user, TaskState state);
 
-    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "assignedUser", source = "user")
+    @Mapping(target = "createdBy", source = "user")
     TaskResponse toResponse(Task task);
 
     @Mapping(target = "id", ignore = true)

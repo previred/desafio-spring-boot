@@ -9,8 +9,10 @@ public record TaskResponse(
     String title,
     String description,
     TaskStateResponse state,
-    @JsonProperty("userId")
-    Long userId,
+    @JsonProperty("assignedUser")
+    UserResponse assignedUser,
+    @JsonProperty("createdBy")
+    UserResponse createdBy,
     @JsonProperty("dueDate")
     LocalDateTime dueDate,
     @JsonProperty("createdAt")

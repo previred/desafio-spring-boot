@@ -3,6 +3,7 @@ package com.taskmanagement.service;
 import com.taskmanagement.dto.request.CreateTaskRequest;
 import com.taskmanagement.dto.response.TaskResponse;
 import com.taskmanagement.dto.response.TaskStateResponse;
+import com.taskmanagement.dto.response.UserResponse;
 import com.taskmanagement.entity.Task;
 import com.taskmanagement.entity.TaskState;
 import com.taskmanagement.entity.User;
@@ -76,13 +77,15 @@ class TaskServiceTest {
 
         testTaskResponse = new TaskResponse(1L, "Test Task", "Description",
                 new TaskStateResponse(1L, "TODO", "Pendiente"),
-                1L, null, testTask.getCreatedAt(), testTask.getUpdatedAt());
+                new UserResponse(1L, "testuser", "test@test.com", "Test User", LocalDateTime.now(), LocalDateTime.now()),
+                new UserResponse(1L, "testuser", "test@test.com", "Test User", LocalDateTime.now(), LocalDateTime.now()),
+                null, testTask.getCreatedAt(), testTask.getUpdatedAt());
     }
 
     @Test
     @DisplayName("Should create task successfully")
     void shouldCreateTask() {
-        CreateTaskRequest request = new CreateTaskRequest("Test Task", "Description", 1L, null);
+        CreateTaskRequest request = new CreateTaskRequest("Test Task", "Description", 1L, null, null);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
         when(taskStateRepository.findById(1L)).thenReturn(Optional.of(todoState));
@@ -99,7 +102,7 @@ class TaskServiceTest {
     @Test
     @DisplayName("Should throw exception when state not found")
     void shouldThrowExceptionWhenStateNotFound() {
-        CreateTaskRequest request = new CreateTaskRequest("Test Task", "Description", 999L, null);
+        CreateTaskRequest request = new CreateTaskRequest("Test Task", "Description", 999L, null, null);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
         when(taskStateRepository.findById(999L)).thenReturn(Optional.empty());
