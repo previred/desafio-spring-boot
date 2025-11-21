@@ -22,8 +22,10 @@ export default function TaskDashboard({ onLogout }) {
   const loadTaskStates = async () => {
     try {
       const states = await taskStateService.getTaskStates();
-      setTaskStates(states);
+      setTaskStates(Array.isArray(states) ? states : []);
     } catch (err) {
+      console.error('Error loading task states:', err);
+      setTaskStates([]);
       setError('Error al cargar estados de tarea');
     }
   };
@@ -34,11 +36,18 @@ export default function TaskDashboard({ onLogout }) {
       const filterParams = {};
       if (filter.stateId) filterParams.stateId = filter.stateId;
 
+      console.log('Loading tasks with filters:', filterParams);
       const data = await taskService.getTasks(filterParams);
-      setTasks(data);
+      console.log('Tasks loaded:', data);
+
+      // Backend returns paginated response with 'content' array
+      const tasksArray = data.content || data;
+      setTasks(Array.isArray(tasksArray) ? tasksArray : []);
       setError('');
     } catch (err) {
-      setError('Error al cargar tareas');
+      console.error('Error loading tasks:', err);
+      setTasks([]);
+      setError(err.message || 'Error al cargar tareas');
     } finally {
       setLoading(false);
     }
@@ -69,14 +78,18 @@ export default function TaskDashboard({ onLogout }) {
     try {
       if (selectedTask) {
         await taskService.updateTask(selectedTask.id, taskData);
+        console.log('Task updated successfully');
       } else {
         await taskService.createTask(taskData);
+        console.log('Task created successfully');
       }
       setShowForm(false);
       setSelectedTask(null);
-      loadTasks();
+      await loadTasks(); // Await the reload
+      console.log('Tasks reloaded');
     } catch (err) {
-      throw new Error('Error al guardar tarea');
+      console.error('Error saving task:', err);
+      throw new Error(err.message || 'Error al guardar tarea');
     }
   };
 

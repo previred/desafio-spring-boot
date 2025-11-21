@@ -28,7 +28,7 @@ export default function TaskList({ tasks, taskStates, loading, onEdit, onDelete 
     return <div className="loading">Cargando tareas...</div>;
   }
 
-  if (tasks.length === 0) {
+  if (!Array.isArray(tasks) || tasks.length === 0) {
     return (
       <div className="empty-state">
         <p>No hay tareas disponibles</p>

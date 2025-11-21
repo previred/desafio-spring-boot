@@ -27,8 +27,15 @@ export default function TaskForm({ task, taskStates, onSave, onCancel }) {
     setLoading(true);
 
     try {
-      await onSave(formData);
+      // Ensure stateId is a number
+      const taskData = {
+        ...formData,
+        stateId: parseInt(formData.stateId, 10)
+      };
+      console.log('Saving task:', taskData);
+      await onSave(taskData);
     } catch (err) {
+      console.error('Error saving task:', err);
       setError(err.message || 'Error al guardar tarea');
     } finally {
       setLoading(false);
@@ -37,7 +44,16 @@ export default function TaskForm({ task, taskStates, onSave, onCancel }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value || (name === 'stateId' ? '' : null) });
+    let processedValue = value;
+
+    // Convert stateId to number
+    if (name === 'stateId') {
+      processedValue = value ? parseInt(value, 10) : '';
+    } else if (name === 'assignedUserId') {
+      processedValue = value ? parseInt(value, 10) : null;
+    }
+
+    setFormData({ ...formData, [name]: processedValue });
   };
 
   return (
