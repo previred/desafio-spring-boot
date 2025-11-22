@@ -69,6 +69,25 @@ Credenciales BD:
 
 ------------------------------------------------------------------------
 
+## 🧪 Pruebas Unitarias
+
+El proyecto incluye pruebas unitarias para validar la lógica de negocio de los servicios y garantizar la calidad del código.
+
+### 📌 Tecnologías utilizadas
+- **JUnit 5** (Jupiter)
+- **Mockito**
+- **Spring Boot Test**
+
+### ▶️ Ejecución de pruebas
+
+Para ejecutar todas las pruebas:
+
+```bash
+mvn test
+```
+
+------------------------------------------------------------------------
+
 ## 🔐 Autenticación
 
 ### 📍 POST /api/auth/login
