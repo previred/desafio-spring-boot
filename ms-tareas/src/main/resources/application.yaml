@@ -1,0 +1,63 @@
+# =========================
+# Aplicación
+# =========================
+spring:
+  application:
+    name: ms-tareas
+  # =========================
+  # JWT
+  # =========================
+  jwt:
+    secret: MiClaveSuperSecretaDeAlMenos32Caracteres
+    expiration: 3600
+
+  # =========================
+  # h2 Database (para pruebas)
+  # =========================
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:tareasdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+# =========================
+# Server
+# =========================
+server:
+  port: 8080
+
+# =========================
+# Logging
+# =========================
+logging:
+  level:
+    root: INFO
+    com.yoserp1.tareas: DEBUG
+    liquibase: DEBUG
+
+# =========================
+# Swagger
+# =========================
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    try-it-out-enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    default-models-expand-depth: 1
+    default-model-expand-depth: 1
+  packages-to-scan: com.yoserp1.tareas
+  show-actuator: false
