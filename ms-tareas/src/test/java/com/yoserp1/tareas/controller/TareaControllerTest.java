@@ -3,7 +3,8 @@ package com.yoserp1.tareas.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import com.yoserp1.tareas.dto.TareaDTO;
+import com.yoserp1.tareas.dto.TareaRequestDTO;
+import com.yoserp1.tareas.dto.TareaResponseDTO;
 import com.yoserp1.tareas.service.ITareaService;
 import java.util.Arrays;
 import java.util.List;
@@ -29,26 +30,30 @@ class TareaControllerTest {
   @Test
   @DisplayName("Crea una tarea exitosamente")
   void creaTareaExitosamente() {
-    TareaDTO tareaDTO = new TareaDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
-    when(tareaService.crearTarea(tareaDTO)).thenReturn(tareaDTO);
+    TareaRequestDTO tareaRequestDTO =
+        new TareaRequestDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
 
-    ResponseEntity<TareaDTO> response = tareaController.crearTarea(tareaDTO);
+    TareaResponseDTO tareaResponseDTO =
+        new TareaResponseDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
+    when(tareaService.crearTarea(tareaRequestDTO)).thenReturn(tareaResponseDTO);
+
+    ResponseEntity<TareaResponseDTO> response = tareaController.crearTarea(tareaRequestDTO);
 
     assertEquals(201, response.getStatusCodeValue());
-    assertEquals(tareaDTO, response.getBody());
-    verify(tareaService, times(1)).crearTarea(tareaDTO);
+    assertEquals(tareaResponseDTO, response.getBody());
+    verify(tareaService, times(1)).crearTarea(tareaRequestDTO);
   }
 
   @Test
   @DisplayName("Lista todas las tareas exitosamente")
   void listaTodasLasTareasExitosamente() {
-    List<TareaDTO> tareas =
+    List<TareaResponseDTO> tareas =
         Arrays.asList(
-            new TareaDTO(1L, "Titulo1", "Descripcion1", "Estado1", null, null),
-            new TareaDTO(2L, "Titulo2", "Descripcion2", "Estado2", null, null));
+            new TareaResponseDTO(1L, "Titulo1", "Descripcion1", "Estado1", null, null),
+            new TareaResponseDTO(2L, "Titulo2", "Descripcion2", "Estado2", null, null));
     when(tareaService.listarTareas()).thenReturn(tareas);
 
-    ResponseEntity<List<TareaDTO>> response = tareaController.listarTareas();
+    ResponseEntity<List<TareaResponseDTO>> response = tareaController.listarTareas();
 
     assertEquals(200, response.getStatusCodeValue());
     assertEquals(tareas, response.getBody());
@@ -58,28 +63,34 @@ class TareaControllerTest {
   @Test
   @DisplayName("Obtiene una tarea por ID exitosamente")
   void obtieneTareaPorIdExitosamente() {
-    TareaDTO tareaDTO = new TareaDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
-    when(tareaService.obtenerTarea(1L)).thenReturn(tareaDTO);
+    TareaResponseDTO tareaRequestDTO =
+        new TareaResponseDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
+    when(tareaService.obtenerTarea(1L)).thenReturn(tareaRequestDTO);
 
-    ResponseEntity<TareaDTO> response = tareaController.obtenerTarea(1L);
+    ResponseEntity<TareaResponseDTO> response = tareaController.obtenerTarea(1L);
 
     assertEquals(200, response.getStatusCodeValue());
-    assertEquals(tareaDTO, response.getBody());
+    assertEquals(tareaRequestDTO, response.getBody());
     verify(tareaService, times(1)).obtenerTarea(1L);
   }
 
   @Test
   @DisplayName("Actualiza una tarea exitosamente")
   void actualizaTareaExitosamente() {
-    TareaDTO tareaDTO =
-        new TareaDTO(1L, "Titulo Actualizado", "Descripcion Actualizada", "Estado", null, null);
-    when(tareaService.actualizarTarea(1L, tareaDTO)).thenReturn(tareaDTO);
+    TareaRequestDTO tareaRequestDTO =
+        new TareaRequestDTO(
+            1L, "Titulo Actualizado", "Descripcion Actualizada", "Estado", null, null);
+    TareaResponseDTO tareaResponseDTO =
+        new TareaResponseDTO(
+            1L, "Titulo Actualizado", "Descripcion Actualizada", "Estado", null, null);
+    when(tareaService.actualizarTarea(1L, tareaRequestDTO)).thenReturn(tareaResponseDTO);
 
-    ResponseEntity<TareaDTO> response = tareaController.actualizarTarea(1L, tareaDTO);
+    ResponseEntity<TareaResponseDTO> response =
+        tareaController.actualizarTarea(1L, tareaRequestDTO);
 
     assertEquals(200, response.getStatusCodeValue());
-    assertEquals(tareaDTO, response.getBody());
-    verify(tareaService, times(1)).actualizarTarea(1L, tareaDTO);
+    assertEquals(tareaResponseDTO, response.getBody());
+    verify(tareaService, times(1)).actualizarTarea(1L, tareaRequestDTO);
   }
 
   @Test

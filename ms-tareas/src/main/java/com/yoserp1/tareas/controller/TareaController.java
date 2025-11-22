@@ -1,6 +1,7 @@
 package com.yoserp1.tareas.controller;
 
-import com.yoserp1.tareas.dto.TareaDTO;
+import com.yoserp1.tareas.dto.TareaRequestDTO;
+import com.yoserp1.tareas.dto.TareaResponseDTO;
 import com.yoserp1.tareas.service.ITareaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,9 +30,8 @@ public class TareaController {
       })
   @SecurityRequirement(name = "bearerAuth")
   @PostMapping
-  public ResponseEntity<TareaDTO> crearTarea(@RequestBody TareaDTO tareaDTO) {
-    TareaDTO creada = tareaService.crearTarea(tareaDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(creada);
+  public ResponseEntity<TareaResponseDTO> crearTarea(@RequestBody TareaRequestDTO tareaRequestDTO) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(tareaService.crearTarea(tareaRequestDTO));
   }
 
   @Operation(
@@ -45,7 +45,7 @@ public class TareaController {
       })
   @SecurityRequirement(name = "bearerAuth")
   @GetMapping
-  public ResponseEntity<List<TareaDTO>> listarTareas() {
+  public ResponseEntity<List<TareaResponseDTO>> listarTareas() {
     return ResponseEntity.ok(tareaService.listarTareas());
   }
 
@@ -60,7 +60,7 @@ public class TareaController {
       })
   @SecurityRequirement(name = "bearerAuth")
   @GetMapping("/{id}")
-  public ResponseEntity<TareaDTO> obtenerTarea(@PathVariable Long id) {
+  public ResponseEntity<TareaResponseDTO> obtenerTarea(@PathVariable Long id) {
     return ResponseEntity.ok(tareaService.obtenerTarea(id));
   }
 
@@ -75,9 +75,9 @@ public class TareaController {
       })
   @SecurityRequirement(name = "bearerAuth")
   @PutMapping("/{id}")
-  public ResponseEntity<TareaDTO> actualizarTarea(
-      @PathVariable Long id, @RequestBody TareaDTO tareaDTO) {
-    return ResponseEntity.ok(tareaService.actualizarTarea(id, tareaDTO));
+  public ResponseEntity<TareaResponseDTO> actualizarTarea(
+      @PathVariable Long id, @RequestBody TareaRequestDTO tareaRequestDTO) {
+    return ResponseEntity.ok(tareaService.actualizarTarea(id, tareaRequestDTO));
   }
 
   @Operation(summary = "Eliminar tarea", description = "Elimina una tarea del sistema")

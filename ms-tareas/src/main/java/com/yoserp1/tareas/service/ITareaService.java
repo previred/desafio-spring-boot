@@ -1,16 +1,17 @@
 package com.yoserp1.tareas.service;
 
-import com.yoserp1.tareas.dto.TareaDTO;
+import com.yoserp1.tareas.dto.TareaRequestDTO;
+import com.yoserp1.tareas.dto.TareaResponseDTO;
 import java.util.List;
 
 public interface ITareaService {
-  TareaDTO crearTarea(TareaDTO tareaDTO);
+  TareaResponseDTO crearTarea(TareaRequestDTO tareaRequestDTO);
 
-  List<TareaDTO> listarTareas();
+  List<TareaResponseDTO> listarTareas();
 
-  TareaDTO obtenerTarea(Long id);
+  TareaResponseDTO obtenerTarea(Long id);
 
-  TareaDTO actualizarTarea(Long id, TareaDTO tareaDTO);
+  TareaResponseDTO actualizarTarea(Long id, TareaRequestDTO tareaRequestDTO);
 
   void eliminarTarea(Long id);
 }

@@ -2,7 +2,7 @@ package com.yoserp1.tareas.dto;
 
 import java.time.LocalDateTime;
 
-public record TareaDTO(
+public record TareaRequestDTO(
     Long id,
     String titulo,
     String descripcion,

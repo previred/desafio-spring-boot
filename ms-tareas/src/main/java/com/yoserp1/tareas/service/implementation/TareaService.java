@@ -1,6 +1,7 @@
 package com.yoserp1.tareas.service.implementation;
 
-import com.yoserp1.tareas.dto.TareaDTO;
+import com.yoserp1.tareas.dto.TareaRequestDTO;
+import com.yoserp1.tareas.dto.TareaResponseDTO;
 import com.yoserp1.tareas.exception.AplicacionException;
 import com.yoserp1.tareas.jpa.entity.EstadoTareaEntity;
 import com.yoserp1.tareas.jpa.entity.TareaEntity;
@@ -27,25 +28,27 @@ public class TareaService implements ITareaService {
   @Autowired private TareaMapper tareaMapper;
 
   @Override
-  public TareaDTO crearTarea(TareaDTO tareaDTO) {
-    log.info("Creando tarea: {}", tareaDTO);
+  public TareaResponseDTO crearTarea(TareaRequestDTO tareaRequestDTO) {
+    log.info("Creando tarea: {}", tareaRequestDTO);
 
-    TareaEntity entity = tareaMapper.toEntity(tareaDTO);
+    TareaEntity entity = tareaMapper.toEntity(tareaRequestDTO);
 
-    if (tareaDTO.estado() != null) {
+    if (tareaRequestDTO.estado() != null) {
       EstadoTareaEntity estado =
           estadoTareaRepository
-              .findByNombre(tareaDTO.estado())
-              .orElseThrow(() -> AplicacionException.notFound("Estado", tareaDTO.estado()));
+              .findByNombre(tareaRequestDTO.estado())
+              .orElseThrow(() -> AplicacionException.notFound("Estado", tareaRequestDTO.estado()));
       entity.setEstado(estado);
     }
 
-    if (tareaDTO.usuarioId() != null) {
+    if (tareaRequestDTO.usuarioId() != null) {
       UsuarioEntity usuario =
           usuarioRepository
-              .findById(tareaDTO.usuarioId())
+              .findById(tareaRequestDTO.usuarioId())
               .orElseThrow(
-                  () -> AplicacionException.notFound("Usuario", tareaDTO.usuarioId().toString()));
+                  () ->
+                      AplicacionException.notFound(
+                          "Usuario", tareaRequestDTO.usuarioId().toString()));
       entity.setUsuario(usuario);
     }
 
@@ -56,7 +59,7 @@ public class TareaService implements ITareaService {
   }
 
   @Override
-  public List<TareaDTO> listarTareas() {
+  public List<TareaResponseDTO> listarTareas() {
     try {
       log.info("Listando todas las tareas");
 
@@ -69,7 +72,7 @@ public class TareaService implements ITareaService {
   }
 
   @Override
-  public TareaDTO obtenerTarea(Long id) {
+  public TareaResponseDTO obtenerTarea(Long id) {
     try {
       log.info("Buscando tarea con ID {}", id);
 
@@ -87,20 +90,20 @@ public class TareaService implements ITareaService {
   }
 
   @Override
-  public TareaDTO actualizarTarea(Long id, TareaDTO tareaDTO) {
+  public TareaResponseDTO actualizarTarea(Long id, TareaRequestDTO tareaRequestDTO) {
     TareaEntity entity =
         tareaRepository
             .findById(id)
             .orElseThrow(() -> AplicacionException.notFound("Tarea", id.toString()));
 
-    entity.setTitulo(tareaDTO.titulo());
-    entity.setDescripcion(tareaDTO.descripcion());
+    entity.setTitulo(tareaRequestDTO.titulo());
+    entity.setDescripcion(tareaRequestDTO.descripcion());
 
-    if (tareaDTO.estado() != null) {
+    if (tareaRequestDTO.estado() != null) {
       EstadoTareaEntity estado =
           estadoTareaRepository
-              .findByNombre(tareaDTO.estado())
-              .orElseThrow(() -> AplicacionException.notFound("Estado", tareaDTO.estado()));
+              .findByNombre(tareaRequestDTO.estado())
+              .orElseThrow(() -> AplicacionException.notFound("Estado", tareaRequestDTO.estado()));
       entity.setEstado(estado);
     }
 

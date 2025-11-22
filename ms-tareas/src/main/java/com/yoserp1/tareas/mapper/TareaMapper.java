@@ -1,15 +1,18 @@
 package com.yoserp1.tareas.mapper;
 
-import com.yoserp1.tareas.dto.TareaDTO;
+import com.yoserp1.tareas.dto.TareaRequestDTO;
+import com.yoserp1.tareas.dto.TareaResponseDTO;
+import com.yoserp1.tareas.dto.UsuarioDTO;
 import com.yoserp1.tareas.jpa.entity.EstadoTareaEntity;
 import com.yoserp1.tareas.jpa.entity.TareaEntity;
 import com.yoserp1.tareas.jpa.entity.UsuarioEntity;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TareaMapper {
 
-  public TareaEntity toEntity(TareaDTO dto) {
+  public TareaEntity toEntity(TareaRequestDTO dto) {
     if (dto == null) return null;
 
     TareaEntity entity = new TareaEntity();
@@ -35,18 +38,26 @@ public class TareaMapper {
     return entity;
   }
 
-  public TareaDTO toDTO(TareaEntity entity) {
+  public TareaResponseDTO toDTO(TareaEntity entity) {
     if (entity == null) return null;
 
-    Long usuarioId = entity.getUsuario() != null ? entity.getUsuario().getId() : null;
-    String estadoNombre = entity.getEstado() != null ? entity.getEstado().getNombre() : null;
+    String estadoNombre =
+        Optional.ofNullable(entity.getEstado()).map(EstadoTareaEntity::getNombre).orElse(null);
 
-    return new TareaDTO(
+    UsuarioDTO usuario =
+        Optional.ofNullable(entity.getUsuario())
+            .map(
+                u ->
+                    new UsuarioDTO(
+                        u.getUsername(), u.getNombreCompleto(), u.getEmail(), u.isActivo()))
+            .orElse(null);
+
+    return new TareaResponseDTO(
         entity.getId(),
         entity.getTitulo(),
         entity.getDescripcion(),
         estadoNombre,
         entity.getFechaCreacion(),
-        usuarioId);
+        usuario);
   }
 }

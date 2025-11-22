@@ -6,7 +6,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.never;
 
-import com.yoserp1.tareas.dto.TareaDTO;
+import com.yoserp1.tareas.dto.TareaRequestDTO;
+import com.yoserp1.tareas.dto.TareaResponseDTO;
+import com.yoserp1.tareas.dto.UsuarioDTO;
 import com.yoserp1.tareas.exception.AplicacionException;
 import com.yoserp1.tareas.jpa.entity.EstadoTareaEntity;
 import com.yoserp1.tareas.jpa.entity.TareaEntity;
@@ -44,34 +46,39 @@ class TareaServiceTest {
   @Test
   @DisplayName("Crea una tarea exitosamente")
   void creaTareaExitosamente() {
-    TareaDTO tareaDTO = new TareaDTO(null, "Titulo", "Descripcion", "Estado", null, 1L);
+    TareaRequestDTO tareaRequestDTO =
+        new TareaRequestDTO(null, "Titulo", "Descripcion", "Estado", null, 1L);
+    UsuarioDTO usuarioDTO = new UsuarioDTO("usuario", "Nombre Completo", "admin@dominio.com", true);
+    TareaResponseDTO tareaResponseDTO =
+        new TareaResponseDTO(null, "Titulo", "Descripcion", "Estado", null, usuarioDTO);
     TareaEntity tareaEntity = new TareaEntity();
     UsuarioEntity usuarioEntity = new UsuarioEntity();
     EstadoTareaEntity estadoEntity = new EstadoTareaEntity();
 
-    when(tareaMapper.toEntity(tareaDTO)).thenReturn(tareaEntity);
+    when(tareaMapper.toEntity(tareaRequestDTO)).thenReturn(tareaEntity);
     when(estadoTareaRepository.findByNombre("Estado")).thenReturn(Optional.of(estadoEntity));
     when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
     when(tareaRepository.save(tareaEntity)).thenReturn(tareaEntity);
-    when(tareaMapper.toDTO(tareaEntity)).thenReturn(tareaDTO);
+    when(tareaMapper.toDTO(tareaEntity)).thenReturn(tareaResponseDTO);
 
-    TareaDTO result = tareaService.crearTarea(tareaDTO);
+    TareaResponseDTO result = tareaService.crearTarea(tareaRequestDTO);
 
-    assertEquals(tareaDTO, result);
+    assertEquals(tareaResponseDTO, result);
     verify(tareaRepository, times(1)).save(tareaEntity);
   }
 
   @Test
   @DisplayName("Lanza excepción al crear tarea con estado inexistente")
   void lanzaExcepcionAlCrearTareaConEstadoInexistente() {
-    TareaDTO tareaDTO = new TareaDTO(null, "Titulo", "Descripcion", "EstadoInvalido", null, null);
+    TareaRequestDTO tareaRequestDTO =
+        new TareaRequestDTO(null, "Titulo", "Descripcion", "EstadoInvalido", null, null);
     TareaEntity tareaEntity = new TareaEntity();
 
-    when(tareaMapper.toEntity(tareaDTO)).thenReturn(tareaEntity);
+    when(tareaMapper.toEntity(tareaRequestDTO)).thenReturn(tareaEntity);
     when(estadoTareaRepository.findByNombre("EstadoInvalido")).thenReturn(Optional.empty());
 
     AplicacionException exception =
-        assertThrows(AplicacionException.class, () -> tareaService.crearTarea(tareaDTO));
+        assertThrows(AplicacionException.class, () -> tareaService.crearTarea(tareaRequestDTO));
 
     assertEquals("Estado no encontrado: EstadoInvalido", exception.getMessage());
     verify(tareaRepository, never()).save(any());
@@ -81,15 +88,16 @@ class TareaServiceTest {
   @DisplayName("Lista todas las tareas exitosamente")
   void listaTodasLasTareasExitosamente() {
     TareaEntity tareaEntity = new TareaEntity();
-    TareaDTO tareaDTO = new TareaDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
+    TareaResponseDTO tareaResponseDTO =
+        new TareaResponseDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
 
     when(tareaRepository.findAll()).thenReturn(List.of(tareaEntity));
-    when(tareaMapper.toDTO(tareaEntity)).thenReturn(tareaDTO);
+    when(tareaMapper.toDTO(tareaEntity)).thenReturn(tareaResponseDTO);
 
-    List<TareaDTO> result = tareaService.listarTareas();
+    List<TareaResponseDTO> result = tareaService.listarTareas();
 
     assertEquals(1, result.size());
-    assertEquals(tareaDTO, result.get(0));
+    assertEquals(tareaResponseDTO, result.get(0));
     verify(tareaRepository, times(1)).findAll();
   }
 
@@ -97,14 +105,15 @@ class TareaServiceTest {
   @DisplayName("Obtiene una tarea por ID exitosamente")
   void obtieneTareaPorIdExitosamente() {
     TareaEntity tareaEntity = new TareaEntity();
-    TareaDTO tareaDTO = new TareaDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
+    TareaResponseDTO tareaResponseDTO =
+        new TareaResponseDTO(1L, "Titulo", "Descripcion", "Estado", null, null);
 
     when(tareaRepository.findById(1L)).thenReturn(Optional.of(tareaEntity));
-    when(tareaMapper.toDTO(tareaEntity)).thenReturn(tareaDTO);
+    when(tareaMapper.toDTO(tareaEntity)).thenReturn(tareaResponseDTO);
 
-    TareaDTO result = tareaService.obtenerTarea(1L);
+    TareaResponseDTO result = tareaService.obtenerTarea(1L);
 
-    assertEquals(tareaDTO, result);
+    assertEquals(tareaResponseDTO, result);
     verify(tareaRepository, times(1)).findById(1L);
   }
 
