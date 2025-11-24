@@ -1,71 +1,149 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# 🧘‍♂️ Nuevo SPA - API de Administración de Tareas
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI.
+API RESTful para gestionar tareas, autenticación de usuarios y asignacion de tareas dentro de un SPA.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+------------------------------------------------------------------------
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 21 para la implementación.
-- Utiliza las características de Java 21, como lambdas, records y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias.
+## 🧔🏻‍♂️ Autor
+- **Nombre:** Juan Ángel Ochoa Gómez
+- **Correo:** juan8a2411@gmail.com
+- **Cargo:** Desarrollador Java
+------------------------------------------------------------------------
 
-### Spring Boot 3.5.x:
-- Construye la aplicación utilizando Spring Boot 3.5.x (última versión disponible).
+## 📌 Descripción
 
-### Base de Datos:
+Esta API permite:
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+-   Autenticar usuarios mediante **JWT**
+-   Crear, listar, actualizar y eliminar **tareas**
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
 
-### JWT (JSON Web Token):
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+------------------------------------------------------------------------
+## 💡 Ejecución y Pruebas
+```
+1.clonar proyecto
+2.mvn clean install
+3.mvn spring-boot:run
+```
+------------------------------------------------------------------------
+### Accesos
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+- Console H2: `http://localhost:8080/h2-console`
 
-### OpenAPI y Swagger:
+### Usuarios Precargados para las pruebas
+- **username: admin password: admin**
+- **username: employee password: employee**
 
-- Documenta la API utilizando OpenAPI.
+### [Ir a Curl para pruebas](#ejemplos-curl)
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+## 🚀 Tecnologías
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+-   **Java 21**
+-   **Spring Boot 3.5.8**
+-   **metodologia API First [`openapi.yml`](src/main/resources/openapi.yml)**
+-   **OpenAPI 3.0.4**
+-   **JWT Authentication**
+-   **Base de Datos H2**
+-   **RESTful API Design**
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+------------------------------------------------------------------------
 
-### Documentación:
-- Utiliza OpenAPI 3 para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+## 🏗️ Arquitectura del Proyecto
 
-### Buenas prácticas:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
+``` plaintext
+┌─────────────────────────┐
+│      Controller         │  → Maneja las solicitudes HTTP
+└───────────┬─────────────┘
+            │
+┌───────────▼─────────────┐
+│        Service           │  → Lógica de negocio
+└───────────┬─────────────┘
+            │
+┌───────────▼─────────────┐
+│       Repository         │  → Acceso a datos (JPA)
+└───────────┬─────────────┘
+            │
+┌───────────▼─────────────┐
+│        Database          │
+└──────────────────────────┘
+```
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+------------------------------------------------------------------------
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
+# 🔒 Flujo de Autenticación JWT
 
-### Documentación:
-- Incluye instrucciones claras en un README en formato markdown, sobre cómo ejecutar y probar la aplicación, con ejemplos de requests.
+``` plaintext
+[Cliente]
+    |
+    | POST /auth/login (username + password)
+    v
+[API - AuthController]
+    |
+    | Recibe Petición
+    v
+[AuthService]
+    |
+    | Valida Credenciales,Genera JWT
+    v
+[API responde token]
+    |
+    | Cliente envía: Authorization: Bearer <token>
+    v
+[Filtro JWT valida token en cada request]
+```
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+------------------------------------------------------------------------
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 21, Spring Boot 3.5.x, H2, JWT, OpenAPI.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+# 📚 Endpoints
+
+| Módulo | Método | Endpoint        | Descripción            | Auth |
+|--------|--------|------------------|-------------------------|------|
+| Auth   | POST   | `/auth/login`    | Autentica usuario       | ❌   |
+| Tasks  | GET    | `/tasks`         | Lista tareas            | ✅   |
+| Tasks  | POST   | `/tasks`         | Crea tarea              | ✅   |
+| Tasks  | GET    | `/tasks/{id}`    | Obtener tarea           | ✅   |
+| Tasks  | PUT    | `/tasks/{id}`    | Actualizar tarea        | ✅   |
+| Tasks  | PATCH  | `/tasks/{id}`    | Actualización parcial   | ✅   |
+| Tasks  | DELETE | `/tasks/{id}`    | Eliminar tarea          | ✅   |
+
+
+------------------------------------------------------------------------
+# Ejemplos cURL
+
+### Login:
+``` bash
+curl -X POST http://localhost:8080/api/auth/login   -H "Content-Type: application/json"   -d '{"username": "user", "password": "user123456"}'
+```
+
+### Obtener todas las tareas:
+``` bash
+curl -X GET "http://localhost:8080/api/tasks" -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Crear tarea:
+``` bash
+curl -X POST http://localhost:8080/api/tasks   -H "Authorization: Bearer YOUR_JWT_TOKEN"   -H "Content-Type: application/json"   -d '{"title": "Masaje", "description": "Completo", "statusId":1, "assignedTo":2}'
+```
+
+### Obtener tarea por id:
+``` bash
+curl -X GET "http://localhost:8080/api/tasks/10" -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+### Actualizar tarea completa:
+``` bash
+curl -X PUT "http://localhost:8080/api/tasks/10" -H "Authorization: Bearer YOUR_JWT_TOKEN" -H "Content-Type: application/json" -d '{"title": "Masaje Renovado","description": "Nueva descripción","statusId": 2,"assignedTo": 3}'
+```
+
+### Actualizar tarea parcial:
+``` bash
+curl -X PATCH "http://localhost:8080/api/tasks/10" -H "Authorization: Bearer YOUR_JWT_TOKEN" -H "Content-Type: application/json" -d '{"statusId": 3}'
+```
+
+### Eliminar tarea:
+``` bash
+curl -X DELETE "http://localhost:8080/api/tasks/10" -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+------------------------------------------------------------------------

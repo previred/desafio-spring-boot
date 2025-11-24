@@ -1,0 +1,305 @@
+openapi: 3.0.4
+info:
+  title: Nuevo SPA Administrador de Tareas API
+  version: 1.0.0
+  description: API para gestionar tareas, usuarios y asignaciones dentro de un SPA.
+
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+  /auth/login:
+    post:
+      summary: Autentica un usuario y retorna un token JWT
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Token generado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Credenciales inválidas
+  /tasks:
+    get:
+      summary: Lista todas las tareas
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskResponse'
+        '401':
+          description: Credenciales inválidas
+
+    post:
+      summary: Crea una nueva tarea
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+      responses:
+        '201':
+          description: Tarea creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: Error request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Credenciales inválidas
+
+  /tasks/{id}:
+    get:
+      summary: Obtiene una tarea por ID
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tarea encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: Error request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Credenciales inválidas
+        '404':
+          description: No existe la tarea
+
+    put:
+      summary: Actualiza una tarea existente
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskRequest'
+      responses:
+        '200':
+          description: Tarea actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: Error request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Credenciales inválidas
+        '404':
+          description: No existe la tarea
+
+    patch:
+      summary: Actualiza parcialmente una tarea
+      tags: [Tasks]
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskPatchRequest'
+      responses:
+        '200':
+          description: Tarea actualizada parcialmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: Error request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Credenciales inválidas
+        '404':
+          description: No existe la tarea
+
+    delete:
+      summary: Elimina una tarea
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea eliminada
+        '400':
+          description: Error request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Credenciales inválidas
+        '404':
+          description: No existe la tarea
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: user
+          nullable: false
+          minLength: 1
+          pattern: ".*\\S.*"
+          description: "usuario (no puede ser vacío ni espacios)."
+        password:
+          type: string
+          example: user123456
+          nullable: false
+          minLength: 1
+          pattern: ".*\\S.*"
+          description: "contraseña (no puede ser vacío ni espacios)."
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        expiresIn:
+          type: integer
+          example: 3600
+    TaskRequest:
+      type: object
+      required:
+        - title
+        - description
+        - statusId
+        - assignedTo
+      properties:
+        title:
+          type: string
+          example: "Masaje Completo"
+          nullable: false
+          minLength: 1
+          pattern: ".*\\S.*"
+          description: "Titulo (no puede ser vacío ni espacios)."
+        description:
+          type: string
+          example: "Masaje cuello, espalda, manos y pies"
+          nullable: false
+          minLength: 1
+          pattern: ".*\\S.*"
+          description: "Descripcion (no puede ser vacío ni espacios)."
+        statusId:
+          type: integer
+          example: 1
+        assignedTo:
+          type: integer
+          example: 2
+    TaskResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          example: "Pendiente"
+        assignedTo:
+          type: string
+    TaskPatchRequest:
+      type: object
+      description: Campos opcionales para actualizacion parcial
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        statusId:
+          type: integer
+        assignedTo:
+          type: integer
+    ErrorResponse:
+      type: object
+      required:
+        - message
+        - code
+      properties:
+        message:
+          type: string
+          description: Mensaje de error
+        code:
+          type: integer
+          format: int32
+          description: Código HTTP del error
