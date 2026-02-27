@@ -1,11 +1,14 @@
 package cl.previred.taskmanager.domain.model;
 
+import java.time.LocalDateTime;
+
 public record Task(
         Long id,
         String title,
         String description,
+        User user,
         TaskStatus status,
-        Long userId
+        LocalDateTime createdAt
 ) {
 
     public Task {
