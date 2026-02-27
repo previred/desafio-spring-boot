@@ -22,4 +22,10 @@ public class UserRepositoryAdapter implements UserRepository {
         return userJpaRepository.findByUsername(username)
                 .map(UserMapper::toDomain);
     }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userJpaRepository.findById(id)
+                .map(UserMapper::toDomain);
+    }
 }
