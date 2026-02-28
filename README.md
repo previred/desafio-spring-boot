@@ -1,71 +1,216 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# Task Manager API -- Desafío Técnico PreviRed
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI.
+## Descripción
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+API RESTful desarrollada con Spring Boot 3.5.x y Java 21 para la gestión
+de tareas con autenticación JWT.
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 21 para la implementación.
-- Utiliza las características de Java 21, como lambdas, records y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias.
+La aplicación permite:
 
-### Spring Boot 3.5.x:
-- Construye la aplicación utilizando Spring Boot 3.5.x (última versión disponible).
+-   Autenticación de usuarios mediante JWT
+-   Crear, listar, actualizar y eliminar tareas
+-   Persistencia en base de datos H2 en memoria
+-   Documentación OpenAPI 3 con Swagger UI
 
-### Base de Datos:
+------------------------------------------------------------------------
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+## Tecnologías utilizadas
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+-   Java 21
+-   Spring Boot 3.5.x
+-   Spring Security (JWT)
+-   Spring Data JPA
+-   H2 Database (in-memory)
+-   Maven
+-   OpenAPI 3 (springdoc)
+-   Swagger UI
 
-### JWT (JSON Web Token):
+------------------------------------------------------------------------
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+## Justificación de Arquitectura (Clean Architecture)
 
-### OpenAPI y Swagger:
+Se implementó Clean Architecture con los siguientes objetivos:
 
-- Documenta la API utilizando OpenAPI.
+1.  Independencia del framework\
+    El dominio no depende de Spring, JPA ni infraestructura. Esto
+    permite reemplazar tecnologías sin afectar las reglas de negocio.
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+2.  Separación clara de responsabilidades
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+    -   Domain: Modelos y contratos del negocio\
+    -   Application: Casos de uso\
+    -   Infrastructure: Controllers, JPA, JWT, OpenAPI
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+3.  Testabilidad\
+    Los casos de uso pueden probarse sin levantar el contexto de Spring.
 
-### Documentación:
-- Utiliza OpenAPI 3 para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+4.  Escalabilidad futura\
+    Facilita migración a microservicios o arquitectura orientada a
+    eventos.
 
-### Buenas prácticas:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
+5.  Aplicación de principios SOLID\
+    Especialmente Dependency Inversion y Single Responsibility.
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+------------------------------------------------------------------------
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
+## Cómo ejecutar el proyecto
 
-### Documentación:
-- Incluye instrucciones claras en un README en formato markdown, sobre cómo ejecutar y probar la aplicación, con ejemplos de requests.
+Compilar:
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+mvn clean install
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 21, Spring Boot 3.5.x, H2, JWT, OpenAPI.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+Ejecutar:
+
+mvn spring-boot:run
+
+Aplicación disponible en:
+
+http://localhost:8080
+
+------------------------------------------------------------------------
+
+## Usuarios precargados
+
+| Username | Password |
+|----------|----------|
+| admin    | 1234     |
+| user     | 1234     |
+
+------------------------------------------------------------------------
+
+## Estados tareas precargados
+
+| Id | Name |
+|----|------|
+| 1  | PENDING |
+| 2  | IN_PROGRESS |
+| 3  | COMPLETED |
+
+------------------------------------------------------------------------
+
+## Autenticación JWT
+
+### Obtener token
+
+curl -X POST http://localhost:8080/auth/login\
+-H "Content-Type: application/json"\
+-d '{"username":"admin","password":"1234"}'
+
+Respuesta:
+
+{ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+
+### Usar el token:
+
+curl -X GET http://localhost:8080/tasks \
+-H "Authorization: Bearer `<token>`"
+
+------------------------------------------------------------------------
+
+## CRUD de Tareas
+
+### Crear tarea
+
+curl -X POST http://localhost:8080/tasks\
+-H "Authorization: Bearer `<token>`"\
+-H "Content-Type: application/json"\
+-d '{ "title":"Nueva tarea", "description":"Descripción", "userId":1,
+"status":"PENDING" }'
+
+### Listar tareas
+
+curl -X GET http://localhost:8080/tasks\
+-H "Authorization: Bearer `<token>`"
+
+### Obtener tarea por ID
+
+curl -X GET http://localhost:8080/tasks/1\
+-H "Authorization: Bearer `<token>`"
+
+### Actualizar tarea
+
+curl -X PUT http://localhost:8080/tasks/1\
+-H "Authorization: Bearer `<token>`"\
+-H "Content-Type: application/json"\
+-d '{ "status":"IN_PROGRESS" }'
+
+### Eliminar tarea
+
+curl -X DELETE http://localhost:8080/tasks/1\
+-H "Authorization: Bearer `<token>`"
+
+------------------------------------------------------------------------
+
+## Pruebas negativas recomendadas
+
+###   Acceder sin token → 401
+
+curl -X GET http://localhost:8080/tasks
+
+###  Crear tarea con estado inválido → 400
+
+curl -X POST http://localhost:8080/tasks \
+-H "Authorization: Bearer <token>" \
+-H "Content-Type: application/json" \
+-d '{
+"title": "Tarea inválida",
+"description": "Estado incorrecto",
+"userId": 1,
+"status": "DONE"
+}'
+
+###   Obtener tarea inexistente → 404
+
+curl -X POST http://localhost:8080/tasks \
+-H "Authorization: Bearer <token>" \
+-H "Content-Type: application/json" \
+-d '{
+"title": "Tarea sin usuario",
+"description": "Usuario no existe",
+"userId": 999,
+"status": "PENDING"
+}'
+
+------------------------------------------------------------------------
+
+## Documentación OpenAPI
+
+Swagger UI:
+
+http://localhost:8080/swagger-ui/index.html
+
+OpenAPI JSON:
+
+http://localhost:8080/v3/api-docs
+
+OpenAPI YAML:
+
+http://localhost:8080/v3/api-docs.yaml
+
+Contrato OpenAPI incluido en el repositorio:
+
+openapi.yml
+
+------------------------------------------------------------------------
+
+## Perfil de ejecución
+
+La aplicación utiliza perfiles:
+
+-   dev → H2 console habilitada
+-   prod → H2 console deshabilitada
+
+------------------------------------------------------------------------
+
+## Mejoras futuras
+
+-   Tests unitarios de casos de uso
+-   Tests de integración con MockMvc
+-   Manejo de excepciones personalizadas por tipo
+-   Persistencia en base de datos externa (PostgreSQL)
+-   Despliegue en AWS (Docker + ECS / EKS)
+
+------------------------------------------------------------------------
+
+Desarrollado como solución al desafío técnico para el cargo de
+Desarrollador Senior Backend -- PreviRed.
