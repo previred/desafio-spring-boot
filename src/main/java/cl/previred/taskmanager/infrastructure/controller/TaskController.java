@@ -32,7 +32,7 @@ public class TaskController {
                 request.title(),
                 request.description(),
                 request.userId(),
-                request.status()
+                parseStatus(request.status())
         );
 
         return ResponseEntity
@@ -69,7 +69,7 @@ public class TaskController {
                 id,
                 request.title(),
                 request.description(),
-                TaskMapper.toStatus(request.status())
+                request.status() != null ? parseStatus(request.status()) : null
         );
 
         return ResponseEntity.ok(TaskMapper.toResponse(task));
@@ -81,5 +81,17 @@ public class TaskController {
         deleteTaskUseCase.execute(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    private TaskStatus parseStatus(String status) {
+        if (status == null || status.isBlank()) {
+            return TaskStatus.PENDING;
+        }
+
+        try {
+            return TaskStatus.valueOf(status.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Estado inválido: " + status);
+        }
     }
 }

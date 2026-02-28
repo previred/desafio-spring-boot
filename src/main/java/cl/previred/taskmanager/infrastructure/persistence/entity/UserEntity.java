@@ -3,7 +3,7 @@ package cl.previred.taskmanager.infrastructure.persistence.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "usuarios")
 public class UserEntity {
 
     @Id

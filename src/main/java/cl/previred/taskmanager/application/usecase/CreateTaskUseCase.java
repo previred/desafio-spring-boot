@@ -27,14 +27,15 @@ public class CreateTaskUseCase {
             String title,
             String description,
             Long userId,
-            String status
+            TaskStatus status
     ) {
 
         // 1️⃣ Validar usuario existente
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no existe"));
 
-        TaskStatus taskStatus = TaskStatus.valueOf(status.toUpperCase());
+        //TaskStatus taskStatus = TaskStatus.valueOf(status.toUpperCase());
+        TaskStatus taskStatus = status != null ? status : TaskStatus.PENDING;
 
         // 2️⃣ Crear objeto de dominio
         Task task = new Task(
