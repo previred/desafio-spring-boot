@@ -173,6 +173,16 @@ curl -X POST http://localhost:8080/tasks \
 
 ------------------------------------------------------------------------
 
+## Colección Postman
+
+La colección se encuentra en la carpeta `/postman`.
+
+Variables requeridas:
+- baseUrl → http://localhost:8080
+- token → JWT obtenido desde /auth/login
+
+------------------------------------------------------------------------
+
 ## Documentación OpenAPI
 
 Swagger UI:

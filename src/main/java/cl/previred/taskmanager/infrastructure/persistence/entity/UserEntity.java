@@ -36,13 +36,13 @@ public class UserEntity {
         return password;
     }
 
-    // Solo necesario si tu mapper necesita setear ID en updates.
+    // Solo necesario si mapper necesita setear ID en updates
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Métodos de actualización controlada (opcional pero recomendado)
+     * Métodos de actualización controlada
      */
     public void updateCredentials(String username, String password) {
         this.username = username;

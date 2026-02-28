@@ -30,14 +30,14 @@ public class CreateTaskUseCase {
             TaskStatus status
     ) {
 
-        // 1️⃣ Validar usuario existente
+        // Validar usuario existente
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no existe"));
 
         //TaskStatus taskStatus = TaskStatus.valueOf(status.toUpperCase());
         TaskStatus taskStatus = status != null ? status : TaskStatus.PENDING;
 
-        // 2️⃣ Crear objeto de dominio
+        // Crear objeto de dominio
         Task task = new Task(
                 null, // id null porque es nueva
                 title,
@@ -47,7 +47,7 @@ public class CreateTaskUseCase {
                 LocalDateTime.now()
         );
 
-        // 3️⃣ Persistir
+        // Persistir
         return taskRepository.save(task);
     }
 }

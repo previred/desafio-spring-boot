@@ -21,13 +21,13 @@ public class UpdateTaskUseCase {
             TaskStatus status
     ) {
 
-        // 1️⃣ Buscar existente
+        // Buscar existente
         Task existing = taskRepository.findById(id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Tarea no encontrada con id: " + id)
                 );
 
-        // 2️⃣ Crear nueva instancia actualizada
+        // Crear nueva instancia actualizada
         Task updated = new Task(
                 existing.id(),
                 title != null ? title : existing.title(),
@@ -37,7 +37,7 @@ public class UpdateTaskUseCase {
                 existing.createdAt()
         );
 
-        // 3️⃣ Persistir
+        // Persistir
         return taskRepository.save(updated);
     }
 }

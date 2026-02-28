@@ -14,13 +14,13 @@ public class DeleteTaskUseCase {
 
     public void execute(Long id) {
 
-        // 1️⃣ Verificar que exista
+        // Verificar que exista
         taskRepository.findById(id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Tarea no encontrada con id: " + id)
                 );
 
-        // 2️⃣ Eliminar
+        // Eliminar
         taskRepository.deleteById(id);
     }
 }
