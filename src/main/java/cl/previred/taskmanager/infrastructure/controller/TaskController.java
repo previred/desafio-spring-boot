@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping(value = "/tasks", produces = "application/json")
 @RequiredArgsConstructor
 public class TaskController {
 
