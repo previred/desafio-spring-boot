@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: NuevoSpa API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /auth/login:
+    post:
+      summary: Login de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequestDTO'
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponseDTO'
+        '401':
+          description: Credenciales incorrectas
+
+  /auth/refresh:
+    post:
+      summary: Generar nuevo access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequestDTO'
+      responses:
+        '200':
+          description: Refresh token válido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponseDTO'
+        '401':
+          description: Refresh token inválido
+
+  /tasks:
+    get:
+      summary: Listar todas las tareas
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tarea'
+    post:
+      summary: Crear una tarea
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tarea'
+      responses:
+        '201':
+          description: Tarea creada
+
+  /tasks/{id}:
+    put:
+      summary: Actualizar tarea por id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tarea'
+      responses:
+        '200':
+          description: Tarea actualizada
+    delete:
+      summary: Eliminar tarea por id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Tarea eliminada
+
+components:
+  schemas:
+    AuthRequestDTO:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required: [username, password]
+    RefreshTokenRequestDTO:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+      required: [refreshToken]
+    AuthResponseDTO:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+      required: [accessToken, refreshToken]
+    Tarea:
+      type: object
+      properties:
+        id:
+          type: integer
+        titulo:
+          type: string
+        descripcion:
+          type: string
+        estado:
+          $ref: '#/components/schemas/EstadoTarea'
+        usuario:
+          $ref: '#/components/schemas/Usuario'
+      required: [titulo, descripcion, estado, usuario]
+    EstadoTarea:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+      required: [nombre]
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        role:
+          type: string
+      required: [username, role]

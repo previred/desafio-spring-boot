@@ -1,71 +1,144 @@
-# Desafío Técnico: Gestión de Tareas con Spring Boot y Java
+# 🧩 API REST - Gestión de Tareas con JWT
 
-La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI.
+API REST desarrollada con Spring Boot 3.5.x que permite gestionar tareas asociadas a usuarios autenticados mediante JWT.
 
-## Objetivo:
-Crear una API RESTful utilizando Spring Boot que gestione usuarios y tareas, aplicando buenas prácticas, principios SOLID y utilizando las tecnologías especificadas.
+---
 
-## Requisitos Técnicos:
-### Java:
-- Utiliza Java 21 para la implementación.
-- Utiliza las características de Java 21, como lambdas, records y streams, cuando sea apropiado.
-- Utilizar Maven como gestor de dependencias.
+## 🚀 Tecnologías utilizadas
 
-### Spring Boot 3.5.x:
-- Construye la aplicación utilizando Spring Boot 3.5.x (última versión disponible).
+- Java 21
+- Spring Boot 3.5.x
+- Spring Security
+- JWT
+- Spring Data JPA
+- H2 Database (en memoria)
+- Maven
 
-### Base de Datos:
+---
 
-- Utiliza una base de datos H2.
-- Crea tres tablas: usuarios, tareas y estados_tarea.
-- La tabla usuarios debe contener datos pre cargados.
-- La tabla estados_tarea debe contener estados pre cargados.
+## 📂 Estructura del proyecto
 
-### JPA:
-- Implementa una capa de persistencia utilizando JPA para almacenar y recuperar las tareas.
+- `controller` → Controladores REST
+- `service` → Lógica de negocio
+- `repository` → Acceso a datos
+- `security` → Configuración JWT y filtros
+- `config` → Configuración de seguridad
 
-### JWT (JSON Web Token):
+---
 
-- Implementa la autenticación utilizando JWT para validar usuarios.
+## ⚙️ Cómo ejecutar la aplicación
+Compilar
+mvn clean install
 
-### OpenAPI y Swagger:
+Ejecutar la aplicacion arrancara en 
 
-- Documenta la API utilizando OpenAPI.
+http://localhost:8080
 
-## Funcionalidades:
-### Autenticación:
-- Implementa un endpoint para la autenticación de usuarios utilizando JWT. 
+Consola disponible en 
+http://localhost:8080/h2-console
 
-### CRUD de Tareas:
-- Implementa operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para las tareas.
+Configuración:
 
-## Consideraciones:
-### Seguridad:
-- Asegúrate de que las operaciones CRUD de tareas solo sean accesibles para usuarios autenticados.
+JDBC URL: jdbc:h2:mem:nuevospa
 
-### Documentación:
-- Utiliza OpenAPI 3 para documentar claramente la API.
-- Puntos adicionales si se genera el API mediante metodologia API First. Generar el archivo openapi.yml Nota: Ejemplo Plugin Maven groupId org.openapitools, artifactId openapi-generator-maven-plugin
+User: sa
 
-### Buenas prácticas:
-- Escribe código ordenado, aplicando buenas prácticas y principios SOLID.
+Password: (vacío)
 
-### Creatividad
-- Se espera dada la descripción del problema se creen las entidades y metodos en consecuencia a lo solicitado.
+Autenticación JWT
+1️⃣ Login
+Post http://localhost:8080/auth/login
 
-## Entregables:
-### Repositorio de GitHub:
-- Realiza un Pull request a este repositorio indicando tu nombre, correo y cargo al que postulas.
-- Todos los PR serán rechazados, no es un indicador de la prueba.
+Request 
 
-### Documentación:
-- Incluye instrucciones claras en un README en formato markdown, sobre cómo ejecutar y probar la aplicación, con ejemplos de requests.
+{
+"username": "victor",
+"password": "1234"
+}
 
-## Evaluación:
-Se evaluará la solución en función de los siguientes criterios:
+Response 
+JSON
+{
+"token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+ guardar token para las peticiones
 
-- Correcta implementación de las funcionalidades solicitadas.
-- Aplicación de buenas prácticas de desarrollo, patrones de diseño y principios SOLID.
-- Uso adecuado de Java 21, Spring Boot 3.5.x, H2, JWT, OpenAPI.
-- Claridad y completitud de la documentación.
-- **Puntos extras si la generación de la API se realizo mediante API First**
+todas las peticiones requieren header
+
+Authorization: Bearer TU_TOKEN_AQUI
+
+Crear Tarea
+
+POST http://localhost:8080/tareas
+
+{
+"titulo": "Estudiar NoSQL ",
+"descripcion": "Repasar Funciones",
+"estadoId": 2
+}
+
+Lista Tareas
+
+GET  http://localhost:8080/tareas
+
+Actualizar tareas 
+PUT  http://localhost:8080/tareas/{id}
+
+Ejemplo
+PUT http://localhost:8080/tareas/1
+
+{
+"titulo": "Estudiar NoSQL ",
+"descripcion": "Repasar Funciones",
+"estadoId": 2
+}
+
+Eliminar Tarea
+
+DELETE http://localhost:8080/tareas/{id}
+
+## 🧪 Flujo completo de prueba
+
+Hacer login → obtener token
+
+Crear tarea
+
+Listar tareas
+
+Actualizar tarea
+
+Eliminar tarea
+
+Seguridad
+
+Autenticación basada en JWT
+
+Aplicación stateless
+
+Passwords encriptadas con BCrypt
+
+Filtro personalizado JwtAuthenticationFilter
+
+## 📌 Notas importantes
+
+La base de datos es en memoria (H2), por lo tanto se reinicia cada vez que se detiene la aplicación.
+
+Los usuarios y estados se cargan automáticamente al iniciar.
+
+## 📈 Posibles Mejoras
+
+Implementación de tokens de actualización de
+
+Restricciones de puntos finales basadas en roles
+
+Documentación de
+
+Swagger / OpenAPI Soporte de acoplamiento de
+
+Integración
+
+PostgreSQL
+
+Cobertura de pruebas con JUnit Mockito
+
+Refactor de arquitectura hexagonal
