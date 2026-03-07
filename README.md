@@ -1,3 +1,72 @@
+# Desafío Spring Boot
+Aplicación de gestión de tareas con usuarios, roles y estados, desarrollada en **Spring Boot 3 + Java 21**.
+Incluye seguridad con JWT, documentación de endpoints con Springdoc OpenAPI, y pruebas unitarias con JUnit/Mockito.
+
+## Levantar la aplicación
+### Requisitos previos
+- Java 21
+- Maven 3.9+
+- H2 Database (embebida, no requiere instalación)
+- Spring Boot 3.x
+
+### Pasos
+1. Clonar el repositorio:
+```
+git clone https://github.com/tuusuario/desafiospringboot.git
+cd desafiospringboot
+```
+2. Compilar y ejecutar:
+```
+mvn clean install
+mvn spring-boot:run
+```
+3. La aplicación quedará disponible en:
+```
+http://localhost:8080
+```
+---
+## Autenticación
+- El sistema utiliza JWT.
+- Primero debes autenticarte con el endpoint de login para obtener un token:
+```
+POST /api/auth/login
+{
+"username": "admin",
+"password": "admin123"
+}
+```
+- El token recibido se debe enviar en el header:
+```
+Authorization: Bearer <token>
+```
+---
+## Documentación de API
+Una vez levantada la aplicación, puedes acceder a la documentación interactiva en Swagger/OpenAPI:
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+---
+## Endpoints principales
+### Usuarios
+- `POST /api/users` → Crear usuario
+- `GET /api/users/{id}` → Obtener usuario por ID
+- `GET /api/users` → Listar usuarios
+
+### Tareas
+- `POST /api/tasks` → Crear tarea
+- `GET /api/tasks/{id}` → Obtener tarea por ID
+- `GET /api/tasks` → Listar todas las tareas
+- `GET /api/tasks/user/{id}` → Listar tareas de un usuario
+- `PUT /api/tasks/{id}` → Actualizar tarea
+- `PUT /api/tasks/{id}/assign/{userId}` → Asignar tarea a usuario
+- `DELETE /api/tasks/{id}` → Eliminar tarea
+
+### Autenticación
+- `POST /api/auth/login` → Obtener token JWT
+
+
+--------------------------------------------------------------
 # Desafío Técnico: Gestión de Tareas con Spring Boot y Java
 
 La empresa NUEVO SPA desea desarrollar una plataforma de gestión de tareas para mejorar la productividad de sus equipos. El sistema debe permitir a los usuarios crear, actualizar, eliminar y listar tareas. Además, se requiere autenticación mediante JWT y documentación de la API utilizando OpenAPI.
