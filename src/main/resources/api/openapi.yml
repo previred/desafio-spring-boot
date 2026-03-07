@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: API Gestion de Tareas - Nuevo SPA
+  description: API para el desafio tecnico de Previred.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Servidor Local
+
+paths:
+  /auth/login:
+    post:
+      summary: Autenticar usuario y obtener JWT
+      operationId: authLoginPost
+      tags: [Autenticacion]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+  /tareas:
+    get:
+      summary: Listar todas las tareas
+      operationId: tareasGet
+      tags: [Tareas]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tarea'
+    post:
+      summary: Crear una nueva tarea
+      operationId: tareasPost
+      tags: [Tareas]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaCreate'
+      responses:
+        '201':
+          description: Tarea creada
+
+  /tareas/{id}:
+    put:
+      summary: Actualizar una tarea existente
+      operationId: tareasIdPut
+      tags: [Tareas]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TareaCreate'
+      responses:
+        '200':
+          description: Tarea actualizada
+    delete:
+      summary: Eliminar una tarea
+      operationId: tareasIdDelete
+      tags: [Tareas]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Tarea eliminada
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username: { type: string }
+        password: { type: string }
+
+    LoginResponse:
+      type: object
+      properties:
+        token: { type: string }
+
+    Tarea:
+      type: object
+      properties:
+        id: { type: integer, format: int64 }
+        titulo: { type: string }
+        descripcion: { type: string }
+        estado: { $ref: '#/components/schemas/EstadoTarea' }
+
+    TareaCreate:
+      type: object
+      required: [titulo, descripcion]
+      properties:
+        titulo: { type: string, minLength: 5, maxLength: 20 }
+        descripcion: { type: string, minLength: 5, maxLength: 50 }
+
+    EstadoTarea:
+      type: string
+      enum: [PENDIENTE, EN_PROGRESO, COMPLETADA]
+
+    MessageResponse:
+      type: object
+      properties:
+        mensaje: { type: string }
+        timestamp: { type: string, format: date-time }

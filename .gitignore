@@ -1,0 +1,37 @@
+# Compilados y Binarios
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# BD
+*.mv.db
+*.trace.db
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VS Code
+.vscode/
+
+# SO
+.DS_Store
+Thumbs.db
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+HELP.md
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
